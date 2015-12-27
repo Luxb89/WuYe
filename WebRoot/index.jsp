@@ -19,33 +19,10 @@
 <meta name="apple-mobile-web-app-status-bar-style"
 	content="black-translucent" />
 <base target="mainFrame" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/bootstrap/css/bootstrap.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/bootstrap/css/bootstrap-responsive.css'></c:url>"
-	media="all" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/bootstrap/css/todc_bootstrap.css'></c:url>"
-	media="all">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/css/index/index.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/css/themes.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/css/font/css/font-awesome.css'></c:url>"
-	media="all" />
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/css/style.css'></c:url>" media="all" />
-<script type="text/javascript"
-	src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
-<script type="text/javascript"
-	src="<c:url value='/bootstrap/js/bootstrap.min.js'></c:url>"></script>
-<script type="text/javascript"
-	src="<c:url value='/js/jquery.cookie.js'></c:url>"></script>
-<!--<script type="text/javascript" src="<c:url value='/js/index/menu.js'></c:url>"></script>
--->
-<script type="text/javascript"
-	src="<c:url value='/js/index/application.js'></c:url>"></script>
+<jsp:include page="/jsp/public/head.jsp"></jsp:include>
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/index/index.css'></c:url>" media="all" />
+<script type="text/javascript" src="<c:url value='/js/index/menu.js'></c:url>"></script>
+
 <title>物业管理系统</title>
 <LINK rel="shortcut icon" type=image/x-icon
 	href="<c:url value="/images/logo.png"></c:url>">
@@ -213,7 +190,7 @@
 		<div class="container-fluid" id="content">
 			<div id="left">
 				<div id="menu" class="sidebar-menu">
-					<a href="#primary1" class="nav-header menu-first collapsed"
+					<!--<a href="#primary1" class="nav-header menu-first collapsed"
 						data-toggle="collapse"><i class="icon-list-alt"></i>系统管理</a>
 					<ul id="primary1" class="nav nav-list collapse menu-second in">
 						<li><a href="jsp/role/roleManager.jsp"><i
@@ -256,7 +233,7 @@
 						<li><a href="jsp/costsetting/costSettingManager.jsp"> <i
 								class="icon-user"> </i>收费设置 </a></li>
 					</ul>
-				</div>
+				--></div>
 
 			</div>
 

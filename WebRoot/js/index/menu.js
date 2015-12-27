@@ -31,17 +31,17 @@ function showMenu(menus){
 	for(var i=0;i<menus.length;i++){
 		var str = '';
 		var primary = menus[i];
-		var childs = primary.childPrivileges;
-		str += '<a href="#primary'+primary.privilegeId+'" class="nav-header menu-first collapsed" data-toggle="collapse"><i class="icon-list-alt"></i> '+primary.privilegeName+'</a>';
+		var childs = primary.childMenus;
+		str += '<a href="#primary'+primary.menuId+'" class="nav-header menu-first collapsed" data-toggle="collapse"><i class="icon-list-alt"></i> '+primary.menuName+'</a>';
 		if(i==0){
-			str += '<ul id="primary'+primary.privilegeId+'" class="nav nav-list collapse menu-second in">';
+			str += '<ul id="primary'+primary.menuId+'" class="nav nav-list collapse menu-second in">';
 		}else{
-			str += '<ul id="primary'+primary.privilegeId+'" class="nav nav-list collapse menu-second">';
+			str += '<ul id="primary'+primary.menuId+'" class="nav nav-list collapse menu-second">';
 		}
 		
 		for(var j=0;j<childs.length;j++){
 			var child=childs[j];
-			str += '<li><a href="'+child.path+'"><i class="icon-user"></i> '+child.privilegeName+'</a></li>';
+			str += '<li><a href="'+child.menuPath+'"><i class="icon-user"></i> '+child.menuName+'</a></li>';
 		}
 		str += '</ul>';
 		$("#menu").append(str);

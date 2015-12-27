@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.wuye.common.util.string.StrUtil;
+import com.wuye.common.vo.MenuVo;
 import com.wuye.common.vo.RetVO;
 import com.wuye.constants.BaseConstants;
 import com.wuye.entity.Role;
@@ -39,13 +40,23 @@ public class MenuAction extends ActionSupport{
 	public String loadMenu() {
 	    Map<String,Object> map = new HashMap<String, Object>();
         Map<String,Object> inMap = new HashMap<String, Object>();
+        ActionContext ctx = ActionContext.getContext();
+        Object obj = ctx.getSession().get("user");
+        User user = null;
+        if (obj != null) {
+            user = (User)obj;
+        }
         try {
             if (jsondata != null) {
                 inMap.put("privilegeType", jsondata);
             }
-            RetVO retVo = privilegeServiceManager.getParentPrivilege(inMap);
-            if (BaseConstants.RET_TRUE.equals(retVo.getResult())){
-                map.put("menu", retVo.getDataList());
+            if (user != null) {
+                inMap.put("userId", user.getId());
+            }
+            inMap.put("isParent", "0");
+            List<MenuVo> menuList = privilegeServiceManager.qryUserMenuPrivilege(inMap);
+            if (menuList != null && menuList.size() >0){
+                map.put("menu", menuList);
                 map.put("result", "true");
                 map.put("msg", "权限获取成功！");
             }else {

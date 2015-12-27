@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.wuye.common.dao.hibernate.BaseDaoHibernate;
 import com.wuye.common.util.bean.EntityCopyUtil;
-import com.wuye.common.util.numeric.NumericUtil;
+import com.wuye.common.util.string.StrUtil;
+import com.wuye.common.vo.MenuVo;
 import com.wuye.common.vo.PageInfo;
 import com.wuye.dao.PrivilegeDao;
 import com.wuye.entity.Privilege;
@@ -130,6 +131,36 @@ public class PrivilegeDaoImpl extends BaseDaoHibernate implements PrivilegeDao{
         List<Privilege> privileges = this.jdbcFindList(sql.toString(), Privilege.class,params);
         return privileges;
     }
+
+    public List<Privilege> qryUserMenuPrivilege(Map<String, Object> map) {
+        List<Object> params = new ArrayList<Object>();
+        StringBuffer sql = new StringBuffer();
+        sql.append("select distinct p.* from user_auth ua,role_privilege rp,privilege p where ua.role_id = rp.role_id");
+        sql.append(" and rp.privilege_id = p.privilege_id");
+        if (map.containsKey("privilegeType")) {
+            sql.append(" and p.privilege_type = ?");
+            params.add(map.get("privilegeType"));
+        }
+        if (map.containsKey("userId")) {
+            sql.append(" and ua.user_id = ?");
+            params.add(map.get("userId"));
+        }
+        
+        if (map.containsKey("isParent")) {
+            Object obj = map.get("isParent");
+            if ("0".equals(StrUtil.strnull(obj))) {
+                sql.append(" and p.parent_privilege_id is null");
+            } else {
+                sql.append(" and p.parent_privilege_id = ?");
+                params.add(map.get("isParent"));
+            }
+        }
+        
+        List<Privilege> privileges = this.jdbcFindList(sql.toString(), Privilege.class,params);
+        return privileges;
+    }
+    
+    
     
     
 }
