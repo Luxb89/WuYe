@@ -1,1 +1,5 @@
 *.class
+.settings/
+classes/
+.classpath
+.mymetadata
