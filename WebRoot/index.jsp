@@ -222,6 +222,9 @@
 						<li><a href="jsp/user/userManager.jsp"><i
 								class="icon-user"></i>用户管理</a>
 						</li>
+						<li><a href="jsp/privilege/privilegeManager.jsp"><i
+								class="icon-user"></i>权限管理</a>
+						</li>
 					</ul>
 					<a href="#primary2" class="nav-header menu-first collapsed"
 						data-toggle="collapse"><i class="icon-list-alt"></i>基础资料管理</a>
