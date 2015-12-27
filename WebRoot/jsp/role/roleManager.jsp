@@ -9,19 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/bootstrap.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/bootstrap-responsive.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/style.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/todc_bootstrap.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/themes.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/font/css/font-awesome.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/inside.css'></c:url>" media="all">
-<script type="text/javascript" src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/bootstrap/js/bootstrap.min.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/modal.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/json2.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/public/defined-checkbox.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/jquery.myPagination.js'></c:url>"></script>
+<jsp:include page="/jsp/public/head.jsp"></jsp:include>
 <script type="text/javascript" src="<c:url value='/js/role/roleInfoList.js'></c:url>"></script>
 <style type="text/css">
 .defined-role-btn {

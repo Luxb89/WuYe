@@ -10,16 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/bootstrap.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/bootstrap-responsive.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/style.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/todc_bootstrap.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/themes.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/font/css/font-awesome.css'></c:url>" media="all" />
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/inside.css'></c:url>" media="all">
-<link rel="stylesheet" type="text/css" href="<c:url value='/css/defined-style.css'></c:url>" media="all">
-<script type="text/javascript" src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/bootstrap/js/bootstrap.min.js'></c:url>"></script>
+<jsp:include page="/jsp/public/head.jsp"></jsp:include>
 <script type="text/javascript" src="<c:url value='/js/role/rolePrivilegeDetail.js'></c:url>"></script>
 <title>物业管理-角色管理</title>
 <style type="text/css">
