@@ -42,15 +42,15 @@ function callBack(data){
 			trStr += '<td class="with-checkbox"><input type="checkbox" name="check" value="'+ite.roomId+'" /></td>';
 			//小区
 			if (ite.community != null ){
-				trStr += '<td>'+StrUtil.Strnull(ite.community.communityName)+'</td>';
+				trStr += '<td>'+StrUtil.strnull(ite.community.communityName)+'</td>';
 			}else{
 				trStr += '<td></td>';
 			}
 			
 			if(ite.building != null){
-				var buildingName = StrUtil.Strnull(ite.building.buildingName);
+				var buildingName = StrUtil.strnull(ite.building.buildingName);
 				if (ite.unit != null){
-					buildingName += "-" + StrUtil.Strnull(ite.unit.buildingName);
+					buildingName += "-" + StrUtil.strnull(ite.unit.buildingName);
 				}
 				trStr += '<td>'+buildingName+'</td>';
 			}else{
@@ -61,11 +61,11 @@ function callBack(data){
 			}else{
 				trStr += '<td></td>';
 			}*/
-			trStr += '<td>'+StrUtil.Strnull(ite.roomNbr)+'</td>';
+			trStr += '<td>'+StrUtil.strnull(ite.roomNbr)+'</td>';
 			//trStr += '<td>'+strUtil.Strnull(ite.partyInfo.partyName)+'</td>';
 			if(ite.ownerInfo != null ){
-				trStr += '<td>'+StrUtil.Strnull(ite.ownerInfo.partyName)+'</td>';
-				trStr += '<td>'+StrUtil.Strnull(ite.ownerInfo.account)+'</td>';
+				trStr += '<td>'+StrUtil.strnull(ite.ownerInfo.partyName)+'</td>';
+				trStr += '<td>'+StrUtil.strnull(ite.ownerInfo.account)+'</td>';
 				
 			}else{
 				trStr += '<td></td><td></td>';

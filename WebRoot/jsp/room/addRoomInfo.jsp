@@ -35,8 +35,9 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/css/public/jquery-ui.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css"
-	href="<c:url value='/js/public/selectDiv/css/cityLayout.css'></c:url>" media="all">
-	
+	href="<c:url value='/js/public/selectDiv/css/cityLayout.css'></c:url>"
+	media="all">
+
 <script type="text/javascript"
 	src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
 <script type="text/javascript"
@@ -45,7 +46,8 @@
 	src="<c:url value='/js/public/jquery-ui.js'></c:url>"></script>
 <script type="text/javascript"
 	src="<c:url value='/js/modal.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/public/StrUtil.js'></c:url>"></script>
+<script type="text/javascript"
+	src="<c:url value='/js/public/StrUtil.js'></c:url>"></script>
 
 <script type="text/javascript"
 	src="<c:url value='/js/public/selectSearchCom.js'></c:url>"></script>
@@ -56,20 +58,21 @@
 
 <title>楼栋/单元详情</title>
 <style type="text/css">
-.rpd-detail {
-	margin: 5px;
-	padding: 5px;
-	height: 30px;
-	line-height: 30px;
-}
 
 .defind-label {
-	margin-left: 15px;
+	margin-left: 5px;
 	display: inline;
 }
-
+.box .box-content {*zoom:1;
+	padding: 20px;
+	/* background: #fff; */
+}
 .defind-div {
+	margin-left:5px;
 	display: inline-block;
+}
+.room-row{
+margin-bottom:10px;
 }
 </style>
 </head>
@@ -102,7 +105,8 @@
 									</div>
 									<div class="defind-div">
 										<label class="defind-label">楼栋</label> <input id="building"
-											type="text" style="width:200px" class="input-medium" placeholder="输入选择楼栋">
+											type="text" style="width: 200px" class="input-medium"
+											placeholder="输入选择楼栋">
 									</div>
 									<div class="defind-div">
 										<!-- <a class="btn pull-right">确定</a> -->
@@ -112,12 +116,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="row-fluid" style="margin-left:40px">
-							<div class="span2" >
+						<div class="row-fluid" style="margin-left: 40px">
+							<div class="span2">
 								<h4>基本信息</h4>
 							</div>
 						</div>
-						<div class="row-fluid" style="margin-left:40px">
+						<div class="row-fluid" style="margin-left: 40px">
 
 							<div class="span3">
 								<span>所属物业公司：</span><span id="desCompany"></span>
@@ -136,52 +140,48 @@
 						<div class="box-content">
 							<form id="roomform" method="post"
 								class="form-horizontal form-validate" novalidate>
-
-
-								<div id="rooms" class="box-content">
-									<div class="row-fluid" id="room1">
-										<div class="span3">
-											<div class="control-group">
-												<label class="tight-label" for="roomNbr">房间号</label>
-												<div class="tight-control">
-													<input type="text" style="width:100px" id="roomNbr" name="roomNbr"
-														class=""> <span class="maroon">*</span>
-												</div>
+								<div id="rooms" class="control-group"
+									style="margin-bottom: 100px;">
+									<div class="row-fluid room-row">
+										<div class="span12">
+											<div class="span2 defind-div ">
+												<label class="defind-label" for="roomNbr">房间号</label> <input
+													type="text" style="width: 30%" id="roomNbr" name="roomNbr"
+													class=""> <span class="maroon">*</span>
+											</div>
+											<div class="defind-div span2" style="margin-left:10px">
+												<label class="defind-label" for="ownerName">业主名称</label> <input
+													type="text" style="width: 49%" id="ownerName"
+													name="ownerName">
+											</div>
+											<div class="span2 defind-div " style="margin-left:10px">
+												<label class="defind-label" for="ownerTel">业主电话</label> <input type="text"
+													style="width: 47%" id="ownerTel" name="ownerTel">
 											</div>
 
-										</div>
-										<div class="span3">
-											<div class="control-group">
-												<label class="tight-label" for="ownerName">业主名称</label>
-												<div class="tight-control">
-													<input type="text" style="width:100px"  id="ownerName" name="ownerName">
-												</div>
+											<div class="defind-div span2" style="margin-left:10px">
+												<label class="defind-label" for="buildingType">房屋类型</label>
+												<select name="type" id="buildingType" style="width: 50%;"></select>
 											</div>
-										</div>
-										<div class="span3">
-											<div class="control-group">
-												<label class="tight-label" for="ownerTel"
-													style="display: inline">业主电话</label>
-		<!-- style="width:20px" -->
-												<div class="tight-control">
-													<input type="text" style="width:100px"  id="ownerTel" name="ownerTel">
-												</div>
+											<div class="defind-div span2" style="margin-left:10px">
+												<label class="defind-label" for="floor">所在楼层</label> <input
+													type="text" style="width: 20%" id="floor" name="floor">
+												<span class="maroon">*</span>
 											</div>
 
-										</div>
-										<div class="span2">
-											<a class="btn" href="javascript:addRow(1)"><i
-												class="icon-plus"></i>新增</a> <a class="btn"
-												href="javascript:removeRow(1)"><i class="icon-minus"></i>删除</a>
+											<div class="defind-div span2">
+												<a class="btn" href="javascript:void(0)"
+													onclick="addRow(this)"><i class="icon-plus"></i>新增</a> <a
+													class="btn" href="javascript:void(0)"
+													onclick="removeRow(this)"><i class="icon-minus"></i>删除</a>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="control-group">
-									<div class="controls">
+								<div class="controls">
 										<input id="submit_btn" type="button" class="btn btn-primary"
 											value="提交">
 									</div>
-								</div>
 							</form>
 						</div>
 					</div>
