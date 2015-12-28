@@ -1,6 +1,7 @@
 package com.wuye.services.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.wuye.common.dao.Dao;
 import com.wuye.common.util.string.StrUtil;
+import com.wuye.common.vo.MenuVo;
 import com.wuye.common.vo.PageInfo;
 import com.wuye.common.vo.RetVO;
 import com.wuye.constants.BaseConstants;
@@ -102,7 +104,7 @@ public class PrivilegeServiceManagerImpl implements PrivilegeServiceManager {
     }
 
     public RetVO getParentPrivilege(Map<String, Object> map) {
-        RetVO retVo = RetVO.newInstance(BaseConstants.RET_TRUE, "权限保存成功!");
+        RetVO retVo = RetVO.newInstance(BaseConstants.RET_TRUE, "权限获取成功!");
         List<Privilege> privileges = privilgeDao.getParentPrivilege(map);
         retVo.setDataList(privileges);
         return retVo;
@@ -110,6 +112,39 @@ public class PrivilegeServiceManagerImpl implements PrivilegeServiceManager {
     
     public List<Privilege> qryRolePrivilegeByRoleId(int roleId) {
         return privilgeDao.getPrivilegeListByRoleId(roleId);
+    }
+
+    public List<MenuVo> qryUserMenuPrivilege(Map<String, Object> map) {
+        List<MenuVo> voList = new ArrayList<MenuVo>();
+        List<Privilege> list = privilgeDao.qryUserMenuPrivilege(map);
+        if (list != null && list.size() >0) {
+            for (Privilege privilege : list) {
+                voList.add(dealUserMenu(map,privilege));
+            }
+        }
+        return voList;
+    }
+    /**
+     * 
+     * .
+     * 
+     * @return
+     * @author Luxb
+     * 2015-12-27 Luxb
+     */
+    public MenuVo dealUserMenu(Map<String, Object> map,Privilege privilege) {
+        MenuVo vo = new MenuVo();
+        vo.setMenuId(privilege.getId());
+        vo.setMenuName(privilege.getPrivilegeName());
+        vo.setMenuPath(privilege.getPath());
+        map.put("isParent", privilege.getId());
+        List<Privilege> list = privilgeDao.qryUserMenuPrivilege(map);
+        if (list != null && list.size() >0) {
+            for (Privilege privilege2 : list) {
+                vo.getChildMenus().add(dealUserMenu(map,privilege2));
+            }
+        }
+        return vo;
     }
     
 }

@@ -6,17 +6,9 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import com.wuye.common.dao.Dao;
-import com.wuye.common.util.bean.EntityCopyUtil;
+import com.wuye.common.vo.MenuVo;
 import com.wuye.common.vo.PageInfo;
-import com.wuye.common.vo.RetVO;
-import com.wuye.constants.BaseConstants;
-import com.wuye.entity.Address;
-import com.wuye.entity.Area;
-import com.wuye.entity.Community;
-import com.wuye.entity.Organization;
-import com.wuye.entity.PartyInfo;
 import com.wuye.entity.Privilege;
-import com.wuye.entity.PropertyCompany;
 
 public interface PrivilegeDao extends Dao{
 	/**
@@ -74,4 +66,12 @@ public interface PrivilegeDao extends Dao{
      * 2015-12-14 Luxb
      */
     List<Privilege> getParentPrivilege(Map<String, Object> map);
+    /**
+     * 获取用户的菜单权限.
+     * @param map
+     * @return
+     * @author Luxb
+     * 2015-12-27 Luxb
+     */
+    List<Privilege> qryUserMenuPrivilege(Map<String, Object> map);
 }
