@@ -129,7 +129,7 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 		StringBuffer sql=new StringBuffer();
 		List params=new ArrayList();
 		sql.append("");
-		sql.append("select a  from Room a where 1=1");
+		sql.append("select a  from Room a where 1=1 ");
 		if(map!=null&&!StrUtil.isNullOrEmpty(map.get("roomName"))){
 			sql.append("and  a.roomName  like ? ");
 			params.add("%"+map.get("roomName")+"%");
@@ -138,6 +138,10 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 			sql.append("and  a.roomId=? ");
 			params.add(map.get("roomId"));
 		}
+		if(map!=null&&!StrUtil.isNullOrEmpty(map.get("buildingId"))){
+            sql.append("and  a.building.buildingId=? ");
+            params.add(map.get("buildingId"));
+        }
 		PageInfo pageInfo=this.dao.findPageInfoByHQLAndParams(sql.toString(), params, currentPage, perPageNum);
 		List list=new ArrayList();
 		if(!map.containsKey("convert")){
@@ -219,16 +223,16 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 				
 				//取业主信息
 				PartyInfo ownerInfo = room.getOwnerInfo();
-				if (ownerInfo != null){
-					JSONObject jsOwnerInfo = EntityCopyUtil.getJSONObject(ownerInfo, new String[]{"partyInfoId","partyName"});
-					BaseEntity userEntt = ownerInfo.getObj();
-					if (userEntt instanceof User){
-						User user = (User)userEntt;
-						jsOwnerInfo.put("userId", user.getUserId());
-						jsOwnerInfo.put("account", user.getAccount());
-					}
-					jsObj.put("ownerInfo", jsOwnerInfo);
-				}
+//				if (ownerInfo != null){
+//					JSONObject jsOwnerInfo = EntityCopyUtil.getJSONObject(ownerInfo, new String[]{"partyInfoId","partyName"});
+//					BaseEntity userEntt = ownerInfo.getObj();
+//					if (userEntt instanceof User){
+//						User user = (User)userEntt;
+//						jsOwnerInfo.put("userId", user.getUserId());
+//						jsOwnerInfo.put("account", user.getAccount());
+//					}
+//					jsObj.put("ownerInfo", jsOwnerInfo);
+//				}
 				
 				jsArray.add(jsObj);
 				
