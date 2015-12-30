@@ -24,4 +24,8 @@ propertyServiceApp.service("propertyService", [ "commonService", function(common
     this.queryParking = function(params, sback, eback) {
     	commonService.call("parkingAction!getParking.action", params, sback, eback);
     };
+    // 添加住户
+    this.addPartyInfos = function(params, sback, eback) {
+    	commonService.call("roomAction!addPartyInfos.action", params, sback, eback);
+    };
 } ]);
