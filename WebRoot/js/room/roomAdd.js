@@ -12,54 +12,20 @@ $(document).ready(function() {
 	company.complete();
 	
 });
-function addRow(num){
+function addRow(obj){
+	$(obj).parents("#rooms a").attr("disabled","true");
+	var cloneRow = $(obj).parents(".room-row").clone();
 	
-	$(".icon-plus").parent("#rooms a").attr("disabled","true").attr('href', 'javascript:void(0);');
-	num = num+1;
-	$("#rooms").append('<div class="row-fluid" id="room'+num+'">' +
-			'										<div class="span3">' +
-			'											<div class="control-group">' +
-			'												<label class="tight-label" for="roomNbr">房间号</label>' +
-			'												<div class="tight-control">' +
-			'													<input type="text" style="width:100px" id="roomNbr" name="roomNbr"' +
-			'														class=""> <span class="maroon">*</span>' +
-			'												</div>' +
-			'											</div>' +
-			'										</div>' +
-			'										<div class="span3">' +
-			'											<div class="control-group">' +
-			'												<label class="tight-label" for="ownerName">业主名称</label>' +
-			'												<div class="tight-control">' +
-			'													<input type="text" style="width:100px"  id="ownerName" name="ownerName">' +
-			'												</div>' +
-			'											</div>' +
-			'										</div>' +
-			'										<div class="span3">' +
-			'											<div class="control-group">' +
-			'												<label class="tight-label" for="ownerTel"' +
-			'													style="display: inline">业主电话</label>' +
-			'												<div class="tight-control">' +
-			'													<input type="text" style="width:100px" id="ownerTel" name="ownerTel">' +
-			'												</div>' +
-			'											</div>' +
-			'										</div>' +
-			'										<div class="span2">' +
-			'											<a class="btn" href="javascript:addRow('+num+')"><i class="icon-plus"></i>新增</a> <a class="btn" href="javascript:removeRow('+num+')"><i '+
-			'												class="icon-minus"></i>删除</a> '+
-			'										</div> '+
-			'									</div> ');
-	$("#building"+num+" select").append($("#building"+(num-1)+" option").clone());
+	$("#rooms").append(cloneRow);
 }
-function removeRow(num){
-	var len = $("#rooms .row-fluid").length ;
+function removeRow(obj){
+	var len = $("#rooms .room-row").length ;
 	if (len != 1){
-		if ($("#room"+num + " a:first").attr("disabled") == "disabled"){
-			$("#room"+num).remove();
-		}
+		$(obj).parents(".room-row").remove();
 	}
 }
 function saveRooms(){
-	if (StrUtil.IsEmpty($(".proCitySelAll").data("buildingId"))){
+	if (StrUtil.isEmpty($(".proCitySelAll").data("buildingId"))){
 		$.sucmodal("提示", "请选择楼栋");
 		return;
 	}
@@ -71,16 +37,21 @@ function saveRooms(){
 	
 	var inparam = {data:{}};
 	var isSave = true;
-	$("#rooms .row-fluid").each(function(index,element){
+	$(".room-row").each(function(index,element){
 		var roomNbr = $(this).find("input[name='roomNbr']").val();
-		if (StrUtil.IsEmpty(roomNbr)){
+		if (StrUtil.isEmpty(roomNbr)){
 			$.sucmodal("提示", "房间号不能为空");
 			isSave = false;
 			return false;
 		}
 		var ownerName = $(this).find("input[name='ownerName']").val();
 		var ownerTel = $(this).find("input[name='ownerTel']").val();
-		
+		var floor = $(this).find("input[name='floor']").val();//所在楼层
+		if (!StrUtil.isPositiveInt(floor)){
+			$.sucmodal("提示", "所在楼层应为正整数");
+			isSave = false;
+			return false;
+		}
 		for (var i = 0; i < jsarray.length; i++){
 			if (roomNbr == jsarray[i].roomNbr){
 				$.sucmodal("提示", "房间号重复了");
@@ -89,24 +60,32 @@ function saveRooms(){
 			}
 		}
 		var room = {
-				building : {},
-				partyInfo:{
-					user:{}
-				}
+				building : {}
 		};
-		if (StrUtil.IsEmpty(unitId)){
+		var partyInfo = {};
+		var user= {};
+		if (StrUtil.isEmpty(unitId)){
 			room.building.buildingId=buildingId;
 		}else{
 			room.building.buildingId=unitId;
 		}
 		
 		room.roomNbr = roomNbr;
-		if (!StrUtil.IsEmpty(ownerName)){
-			room.partyInfo.partyName = ownerName;
+		room.floor=floor;
+		if (!StrUtil.isEmpty(ownerTel) && StrUtil.isEmpty(ownerName)){
+			$.sucmodal("提示", "请填写户主名称");
+			isSave = false;
+			return false;
 		}
-		if (!StrUtil.IsEmpty(ownerTel)){
-			room.partyInfo.user.account = ownerTel;
+		if (!StrUtil.isEmpty(ownerTel)){
+			user.account = ownerTel;
+			partyInfo.user = user;
 		}
+		if (!StrUtil.isEmpty(ownerName)){
+			partyInfo.partyName = ownerName;
+			room.partyInfo = partyInfo;
+		}
+		
 		
 		jsarray.push(room);
 		//building.buildingName = ;
@@ -132,7 +111,7 @@ function saveRooms(){
 }
 
 function clickOk(){
-	if (StrUtil.IsEmpty($(".proCitySelAll").data("buildingId"))){
+	if (StrUtil.isEmpty($(".proCitySelAll").data("buildingId"))){
 		$.sucmodal("提示", "请选择楼栋");
 		return;
 	}
@@ -143,7 +122,7 @@ function clickOk(){
 	var unitId = $(".proCitySelAll").data("unitId");
 	var buildingName = $(".proCitySelAll").data("buildingName");
 	var unitName = $(".proCitySelAll").data("unitName");
-	if (StrUtil.IsEmpty(unitId) && unitId != buildingId){
+	if (StrUtil.isEmpty(unitId) && unitId != buildingId){
 		$("#desBuilding").text(buildingName);
 	}else{
 		$("#desBuilding").text(buildingName+"-"+unitName);
