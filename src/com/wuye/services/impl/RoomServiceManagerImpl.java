@@ -20,6 +20,7 @@ import com.wuye.constants.BaseConstants;
 import com.wuye.dao.PartyInfoDao;
 import com.wuye.dao.PropertyCompanyDao;
 import com.wuye.dao.RoomDao;
+import com.wuye.entity.BaseEntity;
 import com.wuye.entity.Building;
 import com.wuye.entity.Community;
 import com.wuye.entity.PartyInfo;
