@@ -2,8 +2,6 @@ package com.wuye.services.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +20,8 @@ import com.wuye.constants.BaseConstants;
 import com.wuye.dao.PartyInfoDao;
 import com.wuye.dao.PropertyCompanyDao;
 import com.wuye.dao.RoomDao;
-import com.wuye.entity.Address;
-import com.wuye.entity.Area;
 import com.wuye.entity.BaseEntity;
 import com.wuye.entity.Building;
-import com.wuye.entity.BuildingType;
 import com.wuye.entity.Community;
 import com.wuye.entity.PartyInfo;
 import com.wuye.entity.PropertyCompany;
@@ -129,7 +124,7 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 		StringBuffer sql=new StringBuffer();
 		List params=new ArrayList();
 		sql.append("");
-		sql.append("select a  from Room a where 1=1");
+		sql.append("select a  from Room a where 1=1 ");
 		if(map!=null&&!StrUtil.isNullOrEmpty(map.get("roomName"))){
 			sql.append("and  a.roomName  like ? ");
 			params.add("%"+map.get("roomName")+"%");
@@ -138,6 +133,10 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 			sql.append("and  a.roomId=? ");
 			params.add(map.get("roomId"));
 		}
+		if(map!=null&&!StrUtil.isNullOrEmpty(map.get("buildingId"))){
+            sql.append("and  a.building.buildingId=? ");
+            params.add(map.get("buildingId"));
+        }
 		PageInfo pageInfo=this.dao.findPageInfoByHQLAndParams(sql.toString(), params, currentPage, perPageNum);
 		List list=new ArrayList();
 		if(!map.containsKey("convert")){
@@ -239,4 +238,23 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 		retVO.setObject(out);
 		return retVO;
 	}
+    public RetVO addPartyInfos(Room room, JSONArray partryInfoArray) {
+        RetVO retVO = RetVO.newInstance(BaseConstants.RET_TRUE, "");
+        if (room == null || partryInfoArray == null || partryInfoArray.isEmpty()) {
+            retVO.setResult(BaseConstants.RET_FALSE);
+            retVO.setRetMsg("信息错误");
+            return retVO;
+        }
+        for (int i=0; i<partryInfoArray.size();i++){
+            JSONObject srcPartyInfo = partryInfoArray.getJSONObject(i);
+            PartyInfo ownerInfo = new PartyInfo();
+            EntityCopyUtil.populate(ownerInfo, srcPartyInfo, null);
+            RoomPartyRel roomPartyRel =new RoomPartyRel();
+            roomPartyRel.setPartyInfo(ownerInfo);
+            roomPartyRel.setRoom(room);
+            roomPartyRel.setRelType(srcPartyInfo.get("relType") + "");
+            roomPartyRel.save();
+        }
+        return retVO;
+    }
 }
