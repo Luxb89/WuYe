@@ -22,7 +22,7 @@ StrUtil.isEmpty = function(params){
 	}
 }
 /**
- * 判断是否为正整数
+ * 鍒ゆ柇鏄惁涓烘鏁存暟
  */
 StrUtil.isPositiveInt = function(params){
 	var re = /^[1-9]+[0-9]*]*$/; 
