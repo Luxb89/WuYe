@@ -207,7 +207,7 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 					jsObj.put("building", jsBuilding);
 					jsObj.put("unit", jsUnit);
 				}else{
-					JSONObject jsBuilding = EntityCopyUtil.getJSONObject(building,new String[]{"buildingId","buildingName"});
+					JSONObject jsBuilding = EntityCopyUtil.getJSONObject(buildingUp,new String[]{"buildingId","buildingName"});
 					jsObj.put("building", jsBuilding);
 				}
 				Community community = building.getCommunity();
