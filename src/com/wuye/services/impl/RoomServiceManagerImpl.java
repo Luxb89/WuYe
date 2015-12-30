@@ -20,6 +20,7 @@ import com.wuye.constants.BaseConstants;
 import com.wuye.dao.PartyInfoDao;
 import com.wuye.dao.PropertyCompanyDao;
 import com.wuye.dao.RoomDao;
+import com.wuye.entity.BaseEntity;
 import com.wuye.entity.Building;
 import com.wuye.entity.Community;
 import com.wuye.entity.PartyInfo;
@@ -217,16 +218,16 @@ public class RoomServiceManagerImpl extends BaseManagerImpl implements RoomServi
 				
 				//取业主信息
 				PartyInfo ownerInfo = room.getOwnerInfo();
-//				if (ownerInfo != null){
-//					JSONObject jsOwnerInfo = EntityCopyUtil.getJSONObject(ownerInfo, new String[]{"partyInfoId","partyName"});
-//					BaseEntity userEntt = ownerInfo.getObj();
-//					if (userEntt instanceof User){
-//						User user = (User)userEntt;
-//						jsOwnerInfo.put("userId", user.getUserId());
-//						jsOwnerInfo.put("account", user.getAccount());
-//					}
-//					jsObj.put("ownerInfo", jsOwnerInfo);
-//				}
+				if (ownerInfo != null){
+					JSONObject jsOwnerInfo = EntityCopyUtil.getJSONObject(ownerInfo, new String[]{"partyInfoId","partyName"});
+					BaseEntity userEntt = ownerInfo.getObj();
+					if (userEntt instanceof User){
+						User user = (User)userEntt;
+						jsOwnerInfo.put("userId", user.getUserId());
+						jsOwnerInfo.put("account", user.getAccount());
+					}
+					jsObj.put("ownerInfo", jsOwnerInfo);
+				}
 				
 				jsArray.add(jsObj);
 				
