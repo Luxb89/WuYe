@@ -1,5 +1,6 @@
 package com.wuye.action;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,17 +8,23 @@ import lombok.Getter;
 import lombok.Setter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.wuye.common.util.SpringUtil;
+import com.wuye.common.util.bean.EntityCopyUtil;
+import com.wuye.common.util.date.JsonDateValueProcessor;
 import com.wuye.common.util.numeric.NumericUtil;
 import com.wuye.common.util.string.StrUtil;
 import com.wuye.common.vo.PageInfo;
 import com.wuye.common.vo.RetVO;
 import com.wuye.constants.BaseConstants;
+import com.wuye.entity.PartyInfo;
+import com.wuye.entity.Room;
 import com.wuye.entity.User;
 import com.wuye.services.RoomServiceManager;
 
@@ -201,6 +208,27 @@ public class RoomAction extends ActionSupport{
 		returnInfo = jsontip.toString();
 		return "default_user";
 	}
+	
+	public String addPartyInfos(){
+        Map<String,Object> map = new HashMap<String, Object>();
+        try {
+            JSONObject json =JSONObject.fromObject(inParma);
+            JSONObject roomJson = json.getJSONObject("room");
+            JSONArray partryInfoArray = json.getJSONArray("partyInfos");
+            Room room = new Room();
+            EntityCopyUtil.populate(room, roomJson, new String[]{"roomId"});
+            RetVO retVo = roomServiceManager.addPartyInfos(room, partryInfoArray);
+            map.put("result", BaseConstants.RET_TRUE.equals(retVo.getResult()) ? "true" : "false");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("result", "false");
+            log.info(e.getMessage());
+        }
+        JSONObject jsontip = JSONObject.fromObject(map);
+        suc_info = jsontip.toString();
+        return SUCCESS;
+        
+    }
 
 	public String getReturnInfo() {
 		return returnInfo;
