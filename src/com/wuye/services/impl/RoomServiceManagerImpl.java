@@ -2,8 +2,6 @@ package com.wuye.services.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +20,8 @@ import com.wuye.constants.BaseConstants;
 import com.wuye.dao.PartyInfoDao;
 import com.wuye.dao.PropertyCompanyDao;
 import com.wuye.dao.RoomDao;
-import com.wuye.entity.Address;
-import com.wuye.entity.Area;
 import com.wuye.entity.BaseEntity;
 import com.wuye.entity.Building;
-import com.wuye.entity.BuildingType;
 import com.wuye.entity.Community;
 import com.wuye.entity.PartyInfo;
 import com.wuye.entity.PropertyCompany;
