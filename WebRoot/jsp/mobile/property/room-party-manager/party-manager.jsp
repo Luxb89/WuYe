@@ -22,6 +22,8 @@
 <title>住户管理</title>
 </head>
 <body ng-app="meterReadingApp" ng-controller="meterReadingController">
+<!-- 头部 -->
+<jsp:include page="${path}/jsp/mobile/head.jsp"></jsp:include>
 <div class="container-fluid">
 	<div>
 		<form class="form-horizontal"  role="form">
