@@ -16,9 +16,18 @@ public class AcctItemRel extends BaseEntity implements java.io.Serializable {
 	private Integer objId;
 	private Float price;
 	private Integer floor;
+	private String caculateMethod;
 	
 
 	// Constructors
+
+	public String getCaculateMethod() {
+		return caculateMethod;
+	}
+
+	public void setCaculateMethod(String caculateMethod) {
+		this.caculateMethod = caculateMethod;
+	}
 
 	/** default constructor */
 	public AcctItemRel() {
