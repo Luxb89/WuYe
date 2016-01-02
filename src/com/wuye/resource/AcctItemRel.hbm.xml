@@ -41,5 +41,10 @@
         <property name="statusDate" type="java.sql.Timestamp">
             <column name="status_date" length="19" />
         </property>
+        <property name="caculateMethod" type="java.lang.String">
+            <column name="caculate_method" length="2">
+                <comment>10 小区用量公摊,11小区平均公摊 12楼栋用量公摊 13楼栋平均公摊</comment>
+            </column>
+        </property>
     </class>
 </hibernate-mapping>

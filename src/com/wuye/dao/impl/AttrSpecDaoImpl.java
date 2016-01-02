@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
 import net.sf.json.JSONArray;
+
+import org.springframework.stereotype.Repository;
 
 import com.wuye.common.dao.hibernate.BaseDaoHibernate;
 import com.wuye.common.util.numeric.NumericUtil;
@@ -94,6 +94,27 @@ public class AttrSpecDaoImpl extends BaseDaoHibernate implements AttrSpecDao {
 		}
 		
 		return ret;
+	}
+
+	/**
+	 * add by tanyw
+	 */
+	public List<AttrValue> getAttrValue(String ClassJavaCode, String attrCd,
+			String attrVale) {
+		List<Object> params = new ArrayList<Object>();
+		String strSysclass="from SysClass po where po.javaCode=?  and po.statusCd="+BaseConstants.STATUS_VALID;
+		params.add(ClassJavaCode);
+		List sysClassList=super.findListByHQLAndParams(strSysclass, params, BaseConstants.QUERY_ROW_MAX);
+		if(sysClassList!=null&&sysClassList.size()>0){
+//			SysClass sysCalss=sysClassList.get(0);
+//			String hql= "from AttrValue a where a. = ? and a.statusCd = ? and (a.communityId is null or a.communityId =0 or a.communityId = ? )";
+//			
+//			params.add(attrId);
+//			params.add(BaseConstants.STATUS_VALID);
+//			params.add(communityId);
+//			ret = super.findListByHQLAndParams(hql, params, BaseConstants.QUERY_ROW_MAX);
+		}
+		return null;
 	}
 	
 }

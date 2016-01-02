@@ -37,7 +37,7 @@
         <property name="statusDate" type="java.sql.Timestamp">
             <column name="status_date" length="19" />
         </property>
-        <set name="acctItemRels" inverse="true">
+        <!--<set name="acctItemRels" inverse="true">
             <key>
                 <column name="acct_item_type_id" />
             </key>
@@ -49,5 +49,5 @@
             </key>
             <one-to-many class="com.wuye.entity.ExtraordinaryFee" />
         </set>
-    </class>
+    --></class>
 </hibernate-mapping>

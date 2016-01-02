@@ -37,5 +37,10 @@
         <property name="statusDate" type="java.sql.Timestamp">
             <column name="status_date" length="19" />
         </property>
+        <property name="parentValueId" type="java.lang.Long">
+			<column name="PARENT_VALUE_ID" precision="11" scale="0">
+				<comment>上级属性值</comment>
+			</column>
+		</property>
     </class>
 </hibernate-mapping>

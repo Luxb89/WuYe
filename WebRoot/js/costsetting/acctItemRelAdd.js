@@ -7,10 +7,9 @@ $(document).ready(function() {
 	
 });
 function addRow(obj){
-//	$(obj).parents("#acctItemTypes a").attr("disabled",true);
-//	if($(obj).attr("isCanAdd")!=""&&$(obj).attr("isCanAdd")!="false"){
 		var new_div=$(obj).parents(".accItemRelRow").clone();
-		$(obj).attr("disabled",false).attr("isCanAdd","false");
+		var randStr=Date.parse(new Date());
+		$(new_div.children('td').eq(1).find("select")).attr("ng-model","acctItemTypeUp"+randStr);
 		$("#acctItemTypes").append(new_div);
 //	}
 //	var new_div=$("#acctItemType"+1).clone();

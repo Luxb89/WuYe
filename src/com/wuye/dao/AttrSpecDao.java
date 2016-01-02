@@ -12,4 +12,5 @@ public interface AttrSpecDao extends Dao {
 	public List<AttrSpec> getAttr(Map<String,Object> map);
 	public List<AttrValue> getAttrValue(Map<String,Object> map);
 	public List<AttrValue> getSysAttrValue(Map<String,Object> map);
+	public List<AttrValue> getAttrValue(String ClassJavaCode,String attrCd,String attrVale);
 }
