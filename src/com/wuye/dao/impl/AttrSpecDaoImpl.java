@@ -15,6 +15,7 @@ import com.wuye.constants.BaseConstants;
 import com.wuye.dao.AttrSpecDao;
 import com.wuye.entity.AttrSpec;
 import com.wuye.entity.AttrValue;
+import com.wuye.entity.SysClass;
 @Repository(value="attrSpecDao")
 public class AttrSpecDaoImpl extends BaseDaoHibernate implements AttrSpecDao {
 
@@ -99,22 +100,21 @@ public class AttrSpecDaoImpl extends BaseDaoHibernate implements AttrSpecDao {
 	/**
 	 * add by tanyw
 	 */
-	public List<AttrValue> getAttrValue(String ClassJavaCode, String attrCd,
-			String attrVale) {
+	public List<AttrValue> getAttrValue(String ClassJavaCode, String attrCd) {
+		List ret=null;
 		List<Object> params = new ArrayList<Object>();
 		String strSysclass="from SysClass po where po.javaCode=?  and po.statusCd="+BaseConstants.STATUS_VALID;
 		params.add(ClassJavaCode);
 		List sysClassList=super.findListByHQLAndParams(strSysclass, params, BaseConstants.QUERY_ROW_MAX);
 		if(sysClassList!=null&&sysClassList.size()>0){
-//			SysClass sysCalss=sysClassList.get(0);
-//			String hql= "from AttrValue a where a. = ? and a.statusCd = ? and (a.communityId is null or a.communityId =0 or a.communityId = ? )";
-//			
-//			params.add(attrId);
-//			params.add(BaseConstants.STATUS_VALID);
-//			params.add(communityId);
-//			ret = super.findListByHQLAndParams(hql, params, BaseConstants.QUERY_ROW_MAX);
+			SysClass sysCalss=(SysClass)sysClassList.get(0);
+			String hql= "from AttrSpec a where a.classId = ? and a.attrCode= ?  and a.statusCd = ? ";
+			params.add(sysCalss.getClassId());
+			params.add(attrCd);
+			params.add(BaseConstants.STATUS_VALID);
+			ret = super.findListByHQLAndParams(hql, params, BaseConstants.QUERY_ROW_MAX);
 		}
-		return null;
+		return ret;
 	}
 	
 }
