@@ -22,8 +22,6 @@
 <title>住户管理</title>
 </head>
 <body ng-app="meterReadingApp" ng-controller="meterReadingController">
-<!-- 头部 -->
-<jsp:include page="${path}/jsp/mobile/head.jsp"></jsp:include>
 <div class="container-fluid">
 	<div>
 		<form class="form-horizontal"  role="form">
@@ -36,7 +34,7 @@
 			<br/>
 			<div>
 				<span>楼栋：</span>
-				<select class="form-control" ng-model="building.buildingId" ng-change="queryBuildingUnit(building.buildingId)"
+				<select class="form-control" ng-model="building.buildingId" ng-change="changeBuildingQryRoom(building.buildingId)"
 					ng-options="building.buildingId as building.buildingName for building in buildings" ></select>
 			</div>
 			<br/>
