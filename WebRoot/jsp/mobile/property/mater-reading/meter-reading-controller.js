@@ -124,6 +124,7 @@ meterReadingApp.controller("meterReadingController", [ "$scope", "commonService"
 		    	  }
 		      }  
 		  });  
+		 }); 
 		 // 点击房间
 		 $scope.clickRoom = function (room) {
 			 $scope.room = room;
@@ -134,5 +135,4 @@ meterReadingApp.controller("meterReadingController", [ "$scope", "commonService"
 			 
 			 $('#myModal').modal('hide');
 		 }
-});  
 } ]);
