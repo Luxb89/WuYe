@@ -9,7 +9,7 @@ var propertyServiceApp = angular.module("propertyServiceApp", [ "commonApp" ]);
 
 propertyServiceApp.service("propertyService", [ "commonService", function(commonService) {
 	// 获取物业公司信息
-    this.queryCommunity = function(params, sback, eback) {
+    this.queryCompany = function(params, sback, eback) {
         commonService.call("communityAction!getCompany.action", params, sback, eback);
     };
     // 获取小区信息
