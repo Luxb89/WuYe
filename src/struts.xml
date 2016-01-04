@@ -192,4 +192,12 @@
              </result>
  		 </action>
 	</package>
+	<package name="acctItemType" extends="jsonAll">
+		<action name="acctItemTypeAction" class="com.wuye.action.AcctItemTypeAction">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">suc_info</param>
+			</result>
+		</action>
+	</package>
 </struts>    

@@ -1,6 +1,13 @@
 package com.wuye.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import com.wuye.constants.BaseConstants;
 
 /**
  * AttrValue entity. @author MyEclipse Persistence Tools
@@ -16,7 +23,10 @@ public class AttrValue extends BaseEntity implements java.io.Serializable {
 	private String attrValueName;
 	private String attrValue;
 	private Integer communityId;
-	
+    @Setter
+    @Getter
+    private Long                        parentValueId;
+    private List<AttrValue>             childrenAttrValueList;
 	
 
 	// Constructors
@@ -92,5 +102,24 @@ public class AttrValue extends BaseEntity implements java.io.Serializable {
 	public void setAttrId(Integer attrId) {
 		this.attrId = attrId;
 	}
-	
+	public List<AttrValue> getChildrenAttrValueList() {
+        if (this.isLoaded("childrenAttrValueList", this.childrenAttrValueList)) {
+            return this.childrenAttrValueList;
+        }
+        List params=new ArrayList();
+        if (this.getAttrValueId() == 0L) {
+            String hql = "from AttrValue a where a.attrId= ? and a.statusCd = ? and a.parentValueId is null ";
+            params.add(this.getAttrId());
+            params.add(BaseConstants.STATUS_VALID);
+            this.childrenAttrValueList = this.getDefaultDao().findListByHQLAndParams(hql, params);
+        } else {
+            String hql = "from AttrValue a where a.attrId= ? and a.parentValueId = ? and a.statusCd = ?";
+            params.add(this.getAttrId());
+            params.add(this.getAttrValueId());
+            params.add(BaseConstants.STATUS_VALID);
+            this.childrenAttrValueList = this.getDefaultDao().findListByHQLAndParams(hql, params);
+        }
+        this.Loaded("childrenAttrValueList");
+        return childrenAttrValueList;
+    }
 }

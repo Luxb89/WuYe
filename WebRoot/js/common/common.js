@@ -434,3 +434,18 @@ ffc.util.getQueryString = function(name) {
         return unescape(r[2]);
     return null;
 }
+function isPC(){
+		var d=/iPhone|iPod|Android|Windows\s*Phone|SymbianOS/i;
+		var x=d.exec(navigator.userAgent);
+		if(!x){
+			return true;
+		}else if(x[0].match(/Android/i)){
+			if(document.body.clientWidth>750){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}

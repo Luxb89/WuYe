@@ -34,7 +34,7 @@
 			<br/>
 			<div>
 				<span>楼栋：</span>
-				<select class="form-control" ng-model="building.buildingId" ng-change="queryBuildingUnit(building.buildingId)"
+				<select class="form-control" ng-model="building.buildingId" ng-change="changeBuildingQryRoom(building.buildingId)"
 					ng-options="building.buildingId as building.buildingName for building in buildings" ></select>
 			</div>
 			<br/>

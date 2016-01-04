@@ -165,9 +165,68 @@ function ComunityObj(tag,deal){
 	   });
 	};
 }
+function BuddingObj(tag){
+	SearchSelectObj.call(this,tag);
+	var _this = this;
+	this.complete = function(){
+		if (this.child != null && typeof(this.child) != "undefined" && this.child != "null"){
+			this.child.notEdit();
+			this.child.complete();
+		}
+		$( tag ).autocomplete({
+	        source:function(request,response){
+	           $.ajax({
+	               type:"POST",
+	               url:"buildingAction!getBuilding.action",
+	               dataType:"json",
+	               data : {
+	                   "inParma": JSON.stringify({"communityName" : request.term,"communityId":$("#community_name").attr("data-id"),"fuzzy":true})
+	               },
+	               success: function(data) {
+            	   data = eval("("+data+")").data;
+                   response($.map(data, function(item) {
+                       return { label: item.buildingName, value: item.buildingName, valueId : item.buildingId }
+                   }
+                   
+                   ));
+               	}
+	           });
+	       },
+	       delay:500,
+	       select: function(event, ui){
+	    	   $(tag).attr("data-id",ui.item.buildingId);
+	    	   if (_this.child != null && _this.child != undefined && _this.child != "null"){
+	    		   _this.child.canEdit();
+	    		   $(_this.child.tag).attr("data-p_id",ui.item.buildingId);//设置父ID
+	    	   }
+	    	   //$("#community").val(ui.item.label);
+	    	   //$("#community").val(ui.item.value);
+	    	   //event.preventDefault();  
+	       },
+	       change: function( event, ui ) {
+	           // event 是当前事件对象
+	           
+	           // ui对象仅有一个item属性，它表示当前选择的菜单项对应的数据源对象
+	           // 该对象具有label和value属性，以及其它自定义(如果有的话)的属性
+	           // 如果当前没有选择的菜单项，这item属性为null
+	    	   if (ui.item == null || ui.item == "null" || typeof(ui.item) == "undefined"){
+//	    		   $(tag).attr("data-id",null);
+	    		   _this.clear();
+	    		   if (_this.child != null){
+	    			   _this.child.clear();
+	    			   _this.child.notEdit();
+	    		   }
+	    	   }
+	       }
+	   });
+	};
+}
 
 CompanyObj.prototype=new SearchSelectObj();
 CompanyObj.prototype.constructor=CompanyObj;
 
 ComunityObj.prototype=new SearchSelectObj();
 ComunityObj.prototype.constructor=ComunityObj;
+
+BuddingObj.prototype=new SearchSelectObj();
+BuddingObj.prototype.constructor=BuddingObj;

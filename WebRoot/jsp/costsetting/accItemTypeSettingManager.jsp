@@ -46,7 +46,7 @@
           <div class="box-content">
             <div class="row-fluid">
               <div class="span12 control-group">
-                <div> <a class="btn" href="addAcctItemRelInfo.jsp"><i class="icon-plus"></i>新增费用类型</a> 
+                <div> <a class="btn" href="addAcctItemRelInfoTest.jsp"><i class="icon-plus"></i>新增费用类型</a> 
                  <a class="btn" href="javascript:removeAcctItemType()"><i class="icon-remove"></i>删除费用类型</a> 
                 <a class="btn" href="javascript:location.reload()"><i class="icon-refresh"></i>刷新</a> </div>
               </div>
