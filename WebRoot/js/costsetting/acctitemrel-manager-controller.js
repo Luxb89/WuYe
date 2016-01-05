@@ -1,9 +1,11 @@
+'use strict';
 /**
+ * 
  * 控制器
  * 
  * @author tanyw
  */
-var acctItemRelApp = angular.module("acctItemRelApp", ["commonApp","costSettingServiceApp","directiveUtilApp", "propertyServiceApp"]);
+var acctItemRelApp = angular.module("acctItemRelApp", ["commonApp","costSettingServiceApp","directiveUtilApp", "propertyServiceApp",'ui.event', 'ui.autocomplete']);
 
 acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","costSettingService",
 		"propertyService", "$timeout", "$log","DirectiveUtil","$compile",
@@ -18,59 +20,149 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 			    setTimeout(function(){MESSAGE_DIALOG.close()},2000);
 			}
 	    });
-	    $scope.addRow=function(obj){
-	    	var randStr=Date.parse(new Date());
-	    	var dirctBuilder =null;
-	    	//tr
-	    	var tr=$("<tr class='row-fluid accItemRelRow' id='accItemRelRow'"+randStr+"></tr>");
-	    	var td = $('<td width="20%"></td>');
-	    	//label
-	    	dirctBuilder=$('<label class="defind-label">费用大类</label>');
-	    	td.append(dirctBuilder);
-	    	//创建select
-	    	dirctBuilder = new DirectiveUtil.DirectiveBuilder('select');
-			dirctBuilder.appendAttr('style', 'width: 50%')     // $scope.isNew, $scope.showAddBtn, $scope.initData  
-		    .appendAttr('ng-model', "acctItemTypeUp"+randStr+".acctItemTypeId")  
-		    .appendAttr('ng-change', "queryAcctItemType(acctItemTypeUp"+randStr+".acctItemTypeId,"+randStr+")")
-		    .appendAttr("ng-options","acctItemTypeUp"+randStr+".acctItemTypeId as acctItemTypeUp"+randStr+".acctTypeName for acctItemTypeUp"+randStr+" in acctItemTypeUps"+randStr); 
-			
-			tr.append(td.append(dirctBuilder.build($compile, $scope)));
-			td=$('<td width="20%"></td>');
-			dirctBuilder=$('<label class="defind-label">费用细类</label>');
-	    	td.append(dirctBuilder);
-	    	
-	    	//创建select
-	    	dirctBuilder = new DirectiveUtil.DirectiveBuilder('select');
-			dirctBuilder.appendAttr('style', 'width: 50%')     // $scope.isNew, $scope.showAddBtn, $scope.initData  
-		    .appendAttr('ng-model', "acctItemType"+randStr+".acctItemTypeId")
-		    .appendAttr('ng-change', "queryCaculateMethod(acctItemType"+randStr+".acctItemTypeId,"+randStr+")")
-		    .appendAttr("ng-options","acctItemType"+randStr+".acctItemTypeId as acctItemType"+randStr+".acctTypeName for acctItemType"+randStr+" in acctItemTypes"+randStr); 
-			tr.append(td.append(dirctBuilder.build($compile, $scope)));
-			
-			td=$('<td width="20%"></td>');
-			dirctBuilder=$('<label class="defind-label">收费标准</label>');
-	    	td.append(dirctBuilder);
-	    	dirctBuilder=new DirectiveUtil.DirectiveBuilder('input');
-	    	dirctBuilder.appendAttr('type',"text")
-	    	.appendAttr('ng-model','acctItemRel'+randStr+'.price')
-	    	.appendAttr('style','width: 50%');
-	    		//$('<input type="text" id="price" style="width: 50%">');
-	    	td.append(dirctBuilder.build($compile, $scope));
-	    	tr.append(td);
-	    	$("#acctItemTypes").append(tr);
-	    	
-	    	td=$('<td width="20%"></td>');
-			dirctBuilder=$('<label class="defind-label">计算方法</label>');
-	    	td.append(dirctBuilder);
-	    	dirctBuilder=new DirectiveUtil.DirectiveBuilder('select');
-	    		//$('<input type="text" id="price" style="width: 50%">');
-	    	td.append(dirctBuilder);
-	    	tr.append(td);
-	    	$("#acctItemTypes").append(tr);
-			$scope.queryAcctItemTypeUps(randStr);
-			
-	    }
-	    
+        $scope.changeClass= function(obj){
+        	var widget=obj.methods.widget();
+        	widget.removeClass('ui-menu ui-corner-all ui-widget-content').addClass('dropdown-menu');
+        }
+        $scope.propertyCompanys = {
+            options: {
+                html: true,
+                minLength: 1,
+                onlySelectValid: true,
+                outHeight: 50,
+                source: function (request, response) {
+	        		propertyService.queryCompany({"inParma":JSON.stringify({"companyName":request.term,"qryType":"getCompanySimple"})},
+		        		function(data){
+		        			data=eval("("+data+")").data;
+		        			if(data.result=="fasle"){
+		        				$scope.isSuccess=false;
+		        				return false;
+		        			}
+		        			response($.map(data,function(item){
+	        					return { label: item.companyName+"（"+item.regionWithSHQ+"）", value: item.companyName ,companyId:item.companyId}
+	        				}));
+		        		},
+		        		function(){
+		        			$scope.isSuccess=false;
+		        		}
+		        	);
+                }
+            },
+            events: {
+                change: function (event, ui) {
+                    console.log('change', event, ui);
+                },
+                select: function (event, ui) {
+                    console.log('select', event, ui);
+                    $scope.propertyCompany=ui.item;
+                }
+            }
+        };
+        $scope.communitys={
+        	options:{
+        		html:true,
+        		minLength:1,
+        		onlySelectValid:true,
+        		outHeight:50,
+        		source:function(request,response){
+        			if(ffc.util.isEmpty($scope.propertyCompany)){
+        				MESSAGE_DIALOG.error("请先选择物业公司！");
+        				return false;
+        			}
+        			propertyService.queryCommunity(
+        				{"inParma":JSON.stringify({"communityName":request.term,"companyId":$scope.propertyCompany.companyId,"qryType":"getCommunitySimple"})
+        				},
+        				function(data){
+        					data=eval("("+data+")").data;
+        					if(data.result=="false"){
+        						$scope.isSuccess=false;
+        					}
+        					response($.map(data,function(item){
+        						return { label: item.communityName+"（"+item.regionWithSHQ+"）", value: item.communityName,communityId:item.communityId}
+        					}));
+        				},
+        				function(){
+        					$scope.isSuccess=false;
+        				}
+        				
+        			);
+        		}
+        	},
+        	events:{
+        		change:function(event,ui){
+        		
+        		},
+        		select:function(event,ui){
+        			$scope.community=ui.item;
+        		}
+        	}
+        };
+        $scope.buildings={
+        	options:{
+        		html:true,
+        		minLength:1,
+        		onlySelectValid:true,
+        		outHeight:50,
+        		source:function(request,response){
+        			if(ffc.util.isEmpty($scope.community)){
+        				MESSAGE_DIALOG.error("请先选择小区！");
+        				return false;
+        			}
+        			propertyService.queryBuilding(
+        				{"inParma": JSON.stringify({"communityName" : request.term,"communityId":$scope.community.communityId,"fuzzy":true})
+        				},
+        				function(data){
+        					data=eval("("+data+")").data;
+        					if(data.result=="false"){
+        						$scope.isSuccess=false;
+        					}
+        					response($.map(data,function(item){
+        						return { label: item.buildingName, value: item.buildingName, valueId : item.buildingId }
+        					}));
+        				},
+        				function(){
+        					$scope.isSuccess=false;
+        				}
+        				
+        			);
+        		}
+        	},
+        	events:{
+        		change:function(event,ui){
+        		
+        		},
+        		select:function(event,ui){
+        			$scope.building=ui.item;
+        		}
+        	}
+        };
+        $scope.resetCommpanyChild=function(){
+        	$scope.community=null;
+        	$scope.building=null;
+        };
+        $scope.resetBuildingChild=function(){
+        	$scope.building=null;
+        };
+        $scope.acctItemRels=[];
+        $scope.acctItemRels.push({acciItemRelId:1,acctItemType:"",childAcctItemType:""});
+        $scope.addAcctItemRel = function (obj) {
+        	var tempStr=(new Date()).valueOf();
+            $scope.acctItemRels.push({acciItemRelId:tempStr,acctItemType:"",childAcctItemType:""});
+            $scope.queryAcctItemTypeUps(tempStr);
+            $scope.queryCaculateMethod(tempStr);
+        };
+	    $scope.removeAcctItemRel=function(acctItemRel){
+	    	if(!ffc.util.isEmpty(acctItemRel)){
+	    		var length=$scope.acctItemRels.length;
+		    	if(length!=1){
+		    		for(var i=0;i<length;i++){
+			    		if($scope.acctItemRels[i].acciItemRelId==acctItemRel.acciItemRelId){
+			    			$scope.acctItemRels.splice(i,1);
+			    		}
+		    		}
+		    	}
+	    	}
+	    };
 	    //查询费用大类
 		$scope.queryAcctItemTypeUps=function(number){
 			costSettingService.queryAcctItemType({"inParma":JSON.stringify({"qryType":"top"})},
@@ -92,8 +184,37 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 		$scope.queryAcctItemTypeUps(1);
 		//查询物业细类
 		$scope.queryAcctItemType=function(upAcctItemTypeId,number){
-			costSettingService.queryAcctItemType({"inParma":JSON.stringify(
-				{"qryType":"","parentAcctItemTypeId":upAcctItemTypeId})
+			var acctItemTypeAll="acctItemTypes"+number;
+			var acctItemTypeUp="acctItemTypesUp"+upAcctItemTypeId;
+			//如果已经通过上级取过下级了就不需要去库里面再取数据，加速界面的加载
+			if(!ffc.util.isEmpty($scope[acctItemTypeUp])){
+				$scope[acctItemTypeAll]=$scope[acctItemTypeUp];
+			}else{
+				costSettingService.queryAcctItemType({"inParma":JSON.stringify(
+					{"qryType":"","parentAcctItemTypeId":upAcctItemTypeId})
+					},
+					function(data){
+						data=eval("("+data+")");
+						if(data.result=="false"){
+							$scope.isSuccess=false;
+							return false;
+						}
+						$scope[acctItemTypeAll]=data.data;
+						$scope[acctItemTypeUp]=data.data;
+					},
+					function(){
+						$scope.isSuccess=false;
+					}
+				
+				);
+			}
+		}
+		$scope.queryCaculateMethod=function(number){
+			costSettingService.queryCaculateMethod({"inParma" : JSON.stringify(
+				{"attrCd" : "caculate_method",
+				"qryType":"attrCd",
+				"communityId" : ""
+				})
 				},
 				function(data){
 					data=eval("("+data+")");
@@ -101,112 +222,27 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 						$scope.isSuccess=false;
 						return false;
 					}
-					var acctItemTypeAll="acctItemTypes"+number;
-					$scope[acctItemTypeAll]=data.data;
+					//计算方法都是一样的时候直接从缓存存取的值返回
+//					var caculateMethodAll="caculateMethods"+number;
+					$scope.caculateMethods=data.data;
 				},
 				function(){
 					$scope.isSuccess=false;
 				}
-				
 			);
 		}
-		// 查询小区信息
-		$scope.queryCommunity = function () {
-			// 服务请求
-			propertyService.queryCommunity({"inParma" : JSON.stringify( {
-					"buildingId" : ""
-				})},
-				function(data) {
-					data = eval("(" + data + ")");
-					if (data.result=="false") {
-						$scope.isSuccess = false;
-						return false;
-					}
-					// 调用成功
-					$scope.communitys = data.data;
-					},
-					function() {
-						$scope.isSuccess = false;
-					}
-				);
-			}
-		// 查询小区
-		$scope.queryCommunity();
+		$scope.queryCaculateMethod(1);
 		
-		// 查询小区楼栋信息
-		$scope.queryBuilding = function (communityId) {
-			// 服务请求
-			propertyService.queryBuilding( {
-				"inParma" : JSON.stringify( {
-					"communityId" : communityId
-				})
-			},function(data) {
-					data = eval("(" + data + ")");
-					if (data.result=="false") {
-						$scope.isSuccess = false;
-						return false;
-					}
-					// 调用成功
-					$scope.buildings = data.data;
-					},
-					function() {
-						$scope.isSuccess = false;
-					}
-				);
-			}
-		
-		// 查询楼栋单元信息
-		$scope.queryBuildingUnit = function (buildingId) {
-			// 服务请求
-			propertyService.queryBuilding( {
-				"inParma" : JSON.stringify( {
-					"ownerBuilding" : buildingId
-				})
-			},function(data) {
-					data = eval("(" + data + ")");
-					if (data.result=="false") {
-						$scope.isSuccess = false;
-						return false;
-					}
-					// 调用成功
-					$scope.buildingUnits = data.data;
-					},
-					function() {
-						$scope.isSuccess = false;
-					}
-				);
-			}
-		// 查询房间信息
-		$scope.roomPage = 0;
-		$scope.queryRoom = function (buildingId) {
-			// 服务请求
-			propertyService.queryRoom( {
-				"inParma" : JSON.stringify( {
-					"buildingId" : buildingId
-				}), "page" : ++$scope.roomPage
-			},function(data) {
-					data = eval("(" + data + ")");
-					if (data.result=="false") {
-						$scope.isSuccess = false;
-						return false;
-					}
-					// 调用成功
-					if (data.data) {
-						for (var i=0; i<data.data.length; i++) {
-							$scope.rooms.push(data.data[i]);
-						}
-					}
-					},
-					function() {
-						$scope.isSuccess = false;
-					}
-				);
-			}
-		$scope.changeBuildingQryRoom = function (buildingId) {
-			$scope.roomPage = 0;
-			$scope.rooms = [];
-			$scope.queryRoom(buildingId);
+		$scope.clickOk=function(){
+			$scope.acctItemType1;
+			$scope.propertyCompany;
+			$scope.community;
 		}
+//		$scope.changeBuildingQryRoom = function (buildingId) {
+//			$scope.roomPage = 0;
+//			$scope.rooms = [];
+//			$scope.queryRoom(buildingId);
+//		}
 		$(function(){  
 		  	$(window).scroll(function() {  
 		      //当内容滚动到底部时加载新的内容  
@@ -218,17 +254,19 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 		      }  
 		  });  
 		 // 新增住户
-		 $scope.addParty = function (room) {
-			 $scope.partyInfo = {};
-			 $scope.room = room;
-			 $('#myModal').modal('show');
-		}
+//		 $scope.addParty = function (room) {
+//			 $scope.partyInfo = {};
+//			 $scope.room = room;
+//			 $('#myModal').modal('show');
+//		}
 		 $scope.onSave = function () {
 			 // 保存逻辑
 			 // 服务请求
-			propertyService.addPartyInfos({"inParma" : JSON.stringify({
-					"room" : $scope.room,
-					"partyInfos" : [$scope.partyInfo]
+			costSettingService.saveAcctItemRel({"inParma" : JSON.stringify({
+					"propertyCompany" : $scope.propertyCompany,
+					"community" : [$scope.community],
+					"building":$scope.building,
+					"acctItemRels":$scope.acctItemRels
 				})},
 				function(data) {
 					data = eval("(" + data + ")");
@@ -237,7 +275,7 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 						return false;
 					}
 					// 调用成功
-					$('#myModal').modal('hide');
+//					$('#myModal').modal('hide');
 					MESSAGE_DIALOG.alert("保存成功");
 					setTimeout(function(){MESSAGE_DIALOG.close()},1000);
 				},

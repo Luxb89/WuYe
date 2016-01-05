@@ -165,7 +165,7 @@ function ComunityObj(tag,deal){
 	   });
 	};
 }
-function BuddingObj(tag){
+function BuddingObj(tag,deal){
 	SearchSelectObj.call(this,tag);
 	var _this = this;
 	this.complete = function(){
@@ -173,6 +173,9 @@ function BuddingObj(tag){
 			this.child.notEdit();
 			this.child.complete();
 		}
+		if (deal != null && deal.init != null){
+			   deal.init();
+		   }
 		$( tag ).autocomplete({
 	        source:function(request,response){
 	           $.ajax({
@@ -199,6 +202,9 @@ function BuddingObj(tag){
 	    		   _this.child.canEdit();
 	    		   $(_this.child.tag).attr("data-p_id",ui.item.buildingId);//设置父ID
 	    	   }
+	    	    if (deal != null && deal.select != null){
+	    		   deal.select();
+	    	   }
 	    	   //$("#community").val(ui.item.label);
 	    	   //$("#community").val(ui.item.value);
 	    	   //event.preventDefault();  
@@ -215,6 +221,9 @@ function BuddingObj(tag){
 	    		   if (_this.child != null){
 	    			   _this.child.clear();
 	    			   _this.child.notEdit();
+	    		   }
+	    		    if (deal != null && deal.clear != null){
+	    			   deal.clear();
 	    		   }
 	    	   }
 	       }

@@ -3,7 +3,7 @@ directiveUtilApp.factory('DirectiveUtil', [function() {
   var DirectiveUtil = {};  
     
   DirectiveUtil.DirectiveBuilder = function(directiveName) {  
-    
+    randNumber=null;
     directive = directiveName;  
     directiveBuffer = '<' + directiveName + ' ';  
   
@@ -23,8 +23,7 @@ directiveUtilApp.factory('DirectiveUtil', [function() {
   
     this.build = function(compile, scope) {  
       return compile(directiveBuffer + ' />')(scope);  
-    }  
-  };  
-    
+    }
+  };
   return DirectiveUtil;  
 }]);  

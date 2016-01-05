@@ -1,10 +1,8 @@
 $(document).ready(function() {
 	$("#submit_btn").bind("click", saveBuildings);
 	
-	var company = new CompanyObj("#pp_company").add(new ComunityObj("#community").add(new BuddingObj("#buillding")));
+	var company = new CompanyObj("#pp_company",null).add(new ComunityObj("#community",null).add(new BuddingObj("#buillding",null)));
 	company.complete();
-	$.post("acctItemRelAction!getAcctItemType.action",arg1,arg0);
-	
 });
 function addRow(obj){
 		var new_div=$(obj).parents(".accItemRelRow").clone();

@@ -12,4 +12,8 @@ costSettingServiceApp.service("costSettingService", [ "commonService", function(
     this.queryAcctItemType = function(params, sback, eback) {
         commonService.call("acctItemTypeAction!getAcctItemType.action", params, sback, eback);
     };
+    // 获取计算方法
+    this.queryCaculateMethod = function(params, sback, eback) {
+        commonService.call("acctItemTypeAction!getAttrValue.action", params, sback, eback);
+    };
 } ]);

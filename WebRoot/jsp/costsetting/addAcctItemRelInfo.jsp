@@ -90,7 +90,7 @@
 									<div class="box-content pull-right">
 										<div class="defind-div">
 											<label class="defind-label"> 物业公司</label>
-											<input type="text" id="pp_company" class="input-medium  search-query" placeholder="输入选择物业公司"> 
+											<input type="text" id="pp_company"  class="input-medium  search-query" placeholder="输入选择物业公司"> 
 										</div>
 										<div class="defind-div">
 											<label class="defind-label">小区</label>
