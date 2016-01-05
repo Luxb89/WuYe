@@ -19,7 +19,6 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/inside.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/component/message-dialog-comp/css/message-dialog.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/component/bootstrap-wysihtml5/css/bootstrap-wysihtml5-0.0.2.css'></c:url>" media="all">
-
 <title>公告/通知发布</title>
 </head>
 <body ng-app="noticeReleaseApp" ng-controller="noticeReleaseController">
@@ -40,8 +39,31 @@
 		</div>
 		<br/>
 		<div class="form-group">
+			<label class="col-sm-2 control-label"></label>
+			<!--<input class="col-sm-10 form-control" type="text" style="width:60%" ng-model="">-->
+			<div class="col-sm-10 btn-group">
+				<div class="dropdown">
+				   <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
+				      data-toggle="dropdown">
+				      	查看
+				      <span class="caret"></span>
+				   </button>
+				   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="width: 300px">
+				      <li role="presentation">
+				         <div id="chosedDiv">
+				         	<strong ng-bind="choseTitle"></strong>
+				         	<span style="word-break:normal; width:auto; display:block; white-space:pre-wrap;word-wrap : break-word ;overflow: hidden;"  ng-bind="choseValue"></span>
+				         </div>
+				      </li>
+				   </ul>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="form-group">
 			<label class="col-sm-2 control-label">类型：</label>
-			<select class="col-sm-10 form-control" ng-model="notice.noticeType"></select>
+			<select class="col-sm-10 form-control" ng-model="notice.noticeType" ng-options="noticeType.attrValue as noticeType.attrValueName for noticeType in noticeTypes">
+			</select>
 		</div>
 		<br/>
 		<div class="form-group">
@@ -51,8 +73,8 @@
 	</form>
 	<textarea id="textarea" placeholder="输入内容 ..." style="width: 70%; height: 30%" ng-model="notice.content"></textarea>
 	<div clas="btn-group">
-		<button type="button" class="btn btn-default" ng-click="saveDraft()">存为草稿</button>
-		<button type="button" class="btn btn-primary" ng-click="send()">发送</button>
+		<button id="draft" data-loading-text="保存中..." autocomplete="off"   type="button" class="btn btn-default" ng-click="saveDraft()">存为草稿</button>
+		<button id="send" data-loading-text="发送中..." autocomplete="off"  type="button" class="btn btn-primary" ng-click="send()">发送</button>
 	</div>
 </div>
 <div class="modal fade hide" id="myModal" tabindex="-1" role="dialog" style="height:70%;"
@@ -81,7 +103,7 @@
 					</div>
 				</form>
 				<div class="pull-right">
-					<button class="btn btn-primary" ng-click="onSave()">
+					<button class="btn btn-primary" ng-click="onSure()">
   					确定
 	            	</button>
 				</div>

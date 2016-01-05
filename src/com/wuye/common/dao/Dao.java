@@ -442,4 +442,18 @@ public interface Dao {
     public PageInfo findPageInfoByJDBCSQLAndParams(final String sql,
             final List params, final int currentPage, final int perPageNum,
             final boolean isGroupby, final Class zz) ;
+    
+    /**
+     * 通过JDBC执行SQL查询语句，获取分页信息。
+     * 
+     * @param <E> 实体类型
+     * @param sql SQL语句
+     * @param elementType 元素类型
+     * @param params 参数列表
+     * @param currentPage 当前页码
+     * @param perPageNum 每页记录数
+     * @return 分页信息
+     */
+    <E> PageInfo jdbcFindPageInfo(String sql, Class<E> elementType, List<Object> params,
+        int currentPage, int perPageNum);
 }

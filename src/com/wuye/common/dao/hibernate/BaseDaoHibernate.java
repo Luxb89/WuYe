@@ -34,6 +34,7 @@ import com.wuye.common.util.SpringUtil;
 import com.wuye.common.util.date.DateUtil;
 import com.wuye.common.util.string.StrUtil;
 import com.wuye.common.vo.PageInfo;
+import com.wuye.constants.BaseConstants;
 
 /**
  * @版权：物业软件 版权所有 (c) 2007
@@ -1904,5 +1905,84 @@ public class BaseDaoHibernate extends HibernateDaoSupport implements Dao {
             }
         });
         return data;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see com.ffcs.crm2.base.repositories.CrmRepository#jdbcFindPageInfo(java.lang.String,
+     *      java.lang.Class, java.util.List, int, int)
+     */
+    public <E> PageInfo jdbcFindPageInfo(final String sql, final Class<E> elementType,
+        final List<Object> params, final int currentPage, final int perPageNum) {
+        int pageSize = perPageNum;
+        if (pageSize == 0) {
+            pageSize = BaseConstants.DEFAULT_PAGE_PER_COUNT;
+        }
+        this.setFirst((currentPage - 1) * pageSize);
+        // this.setLast(currentPage * perPageNum);
+        this.setLast(pageSize);
+        
+        Object[] array = null;
+        if (params != null) {
+            array = new Object[params.size()];
+            params.toArray(array);
+        }
+        final List<E> list = this.executeJdbc(sql, elementType, array);
+        final int totalCounts = this.jdbcGetSize(sql, params);
+        int totalPages = totalCounts / pageSize;
+        if ((totalCounts % pageSize) > 0) {
+            totalPages += 1;
+        }
+        
+        final PageInfo pageInfo = new PageInfo();
+        pageInfo.setTotalCount(totalCounts);
+        pageInfo.setTotalPageCount(totalPages);
+        pageInfo.setCurrentPage(currentPage);
+        pageInfo.setPerPageCount(pageSize);
+        pageInfo.setDataList(list);
+        
+        return pageInfo;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see com.ffcs.crm2.base.repositories.CrmRepository#jdbcGetSize(java.lang.String,
+     *      java.util.List)
+     */
+    public int jdbcGetSize(final String sql, final List<Object> params) {
+        final String totalCountSql = getTotalCountSql(sql);
+        
+        Object[] array = null;
+        if (params != null) {
+            array = new Object[params.size()];
+            params.toArray(array);
+        }
+        return this.jdbcQueryForInt(totalCountSql, array);
+    }
+    
+    private String getTotalCountSql(final String sql) {
+        final StringBuffer buffer = new StringBuffer();
+        final String sqlString = sql.trim();
+        final int iIndex = (" " + sqlString.toLowerCase()).indexOf(" from ");
+        String sqlHeaderString = sqlString.substring(0, iIndex);
+        // if (sqlHeaderString.toLowerCase().indexOf("select") != -1) {
+        // sqlHeaderString = sqlString.substring(6, iIndex);
+        // }
+        if (sqlHeaderString.toLowerCase().indexOf("distinct") == -1) {
+            buffer.append("select count(*) ").append(sqlString.substring(iIndex));
+        } else {
+            buffer.append("select count(*) from (").append(sqlString).append(") ");
+        }
+        
+        //增加处理，将count语句的order by 去除
+        String countSql = buffer.toString();
+        
+        return countSql;
+    }
+    
+    public int jdbcQueryForInt(final String sql, final Object... args) {
+        return this.getJdbcTemplate().queryForInt(sql, args);
     }
 }
