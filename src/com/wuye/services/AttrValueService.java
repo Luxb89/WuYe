@@ -23,4 +23,15 @@ public interface AttrValueService extends BaseManager {
 	 */
 	public List<AttrValue> getAttrValue(Integer classId, String attrCd,
 			Integer communityId, boolean containSysValue);
+	/**
+	 * 获取属性值
+	 * .
+	 * 
+	 * @param classCode
+	 * @param attrCd
+	 * @return
+	 * @author FFCS-ZHENGGW
+	 * 2016-1-2 FFCS-ZHENGGW
+	 */
+	public List<AttrValue> getAttrValueList(String classCode, String attrCd);
 }

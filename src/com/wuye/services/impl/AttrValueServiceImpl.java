@@ -36,6 +36,21 @@ public class AttrValueServiceImpl extends BaseManagerImpl implements
 		}
 		return null;
 	}
+	
+	public List<AttrValue> getAttrValueList(String classCode, String attrCd) {
+        StringBuffer hql = new StringBuffer();
+        hql.append("select b from AttrSpec a, AttrValue b, SysClass c ")
+                .append(" where 1=1 ").append(" and a.classId = c.classId ")
+                .append(" and a.attrId = b.attrSpec.attrId ")
+                .append(" and b.statusCd = ? ").append(" and a.attrCode = ? ").append(" and c.javaCode = ? ");
+        List<Object> params = new ArrayList<Object>();
+        params.add(BaseConstants.STATUS_VALID);
+        params.add(attrCd);
+        params.add(classCode);
+        List<AttrValue> attrVales = attrValueDao.findListByHQLAndParams(
+                hql.toString(), params);
+        return attrVales;
+	}
 
 	public AttrValue getAttrValue(Integer classId, String attrCd,
 			Integer communityId, String attrValue) {
