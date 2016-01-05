@@ -183,6 +183,15 @@
 			</result>
 		</action>
 	</package>
+	<!-- 通知管理包 -->
+	<package name="notice" extends="jsonAll">
+		<action name="noticeAction" class="com.wuye.action.NoticeAction">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">suc_info</param>
+			</result>
+		</action>
+	</package>
 	<package name="securityCode" extends="struts-default">
 		 <action name="securityCodeImageAction" class="com.wuye.action.SecurityCodeImageAction">
              <result name="success" type="stream">
