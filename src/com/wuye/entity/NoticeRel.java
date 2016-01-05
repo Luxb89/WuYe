@@ -2,6 +2,9 @@ package com.wuye.entity;
 
 import java.sql.Timestamp;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * NoticeRel entity. @author MyEclipse Persistence Tools
  */
@@ -14,7 +17,9 @@ public class NoticeRel extends BaseEntity implements java.io.Serializable {
 	private Notice notice;
 	private String classId;
 	private Integer objId;
-	
+	@Getter
+	@Setter
+	private Integer communityId;
 
 	// Constructors
 

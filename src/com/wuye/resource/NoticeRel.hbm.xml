@@ -31,5 +31,8 @@
         <property name="statusDate" type="java.sql.Timestamp">
             <column name="status_date" length="19" />
         </property>
+        <property name="communityId" type="java.lang.Integer">
+            <column name="community_id" length="11" />
+        </property>
     </class>
 </hibernate-mapping>
