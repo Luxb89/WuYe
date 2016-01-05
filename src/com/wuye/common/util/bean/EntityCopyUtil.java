@@ -13,6 +13,7 @@ import com.wuye.entity.BaseEntity;
 import com.wuye.entity.Building;
 import com.wuye.entity.BuildingType;
 import com.wuye.entity.Community;
+import com.wuye.entity.Notice;
 import com.wuye.entity.Parking;
 import com.wuye.entity.ParkingType;
 import com.wuye.entity.PartyInfo;
@@ -345,6 +346,17 @@ public class EntityCopyUtil {
             BeanUtilsExtend.populate(dest, src, property);
         }else{
             BeanUtilsExtend.populate(dest, src, new String[]{"roleName","statusCd","createDate","statusDate","updateDate"});
+        }
+    }
+	
+	public static void populate(Notice dest, JSONObject src, String[] property){
+        if (dest == null || src == null){
+            return;
+        }
+        if (property != null && property.length > 0){
+            BeanUtilsExtend.populate(dest, src, property);
+        }else{
+            BeanUtilsExtend.populate(dest, src, new String[]{"noticeType","title","content","statusCd","createDate","statusDate","updateDate"});
         }
     }
 }
