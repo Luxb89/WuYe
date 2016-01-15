@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.stereotype.Repository;
 
 import com.wuye.common.dao.hibernate.BaseDaoHibernate;
-import com.wuye.common.util.numeric.NumericUtil;
+import com.wuye.common.util.bean.EntityCopyUtil;
 import com.wuye.common.util.string.StrUtil;
 import com.wuye.common.vo.PageInfo;
-import com.wuye.common.vo.RetVO;
 import com.wuye.constants.BaseConstants;
 import com.wuye.dao.AcctItemRelDao;
+import com.wuye.entity.AcctItemRel;
 import com.wuye.entity.Building;
-import com.wuye.entity.Community;
+import com.wuye.entity.PartyInfo;
+import com.wuye.entity.Room;
+import com.wuye.entity.RoomPartyRel;
+import com.wuye.entity.User;
 @Repository(value="acctItemRelDao")
 public class AcctItemRelDaoImpl extends BaseDaoHibernate implements AcctItemRelDao {
 	public PageInfo getAcctItemType(Map<String, Object> map) {
@@ -57,21 +62,58 @@ public class AcctItemRelDaoImpl extends BaseDaoHibernate implements AcctItemRelD
 		return super.findListByHQLAndParams(hql, params);
 	}
 
-	public PageInfo getSimpleBuildingBycommunity(Map<String, Object> map) {
+	public PageInfo queryAcctItemRels(Map<String, Object> map) {
 		if (map == null){
 			return null;
 		}
+		boolean isActiveQuery=false;
 		StringBuffer hql = new StringBuffer();
-		hql.append("select c from Building c,Community cm where 1=1 and c.ownerBuilding is null and c.community = cm and cm.communityId= ?  and c.statusCd = ? ");
-		/*Community community = (Community) Community.getDao().getObject(Community.class, NumericUtil.nullToIntegerZero(map.get("communityId")));
-		if (community == null){
-			return null;
-		}*/
+		hql.append("select c from AcctItemRel c where 1=1 and c.statusCd = ? ");
 		List<Object> params = new ArrayList<Object>();
-		params.add(NumericUtil.nullToIntegerZero(map.get("communityId")));
 		params.add(BaseConstants.STATUS_VALID);
-		
+		//查询物业公司下面所有的
+		if(map.containsKey("queryType")){
+			if("queryByCompany".equals(map.get("queryType"))){
+				hql.append(" and c.classId= ? ");
+				params.add(BaseConstants.CLASS_COMPANY);
+				isActiveQuery=true;
+			}else if("queryByCommunity".equals(map.get("queryType"))){
+				hql.append(" and c.classId= ? ");
+				params.add(BaseConstants.CLASS_COMMUNITY);
+				isActiveQuery=true;
+			}else if("queryByBuilding".equals(map.get("queryType"))){
+				hql.append(" and c.classId= ? ");
+				params.add(BaseConstants.CLASS_BUILDING);
+				isActiveQuery=true;
+			}else if("queryByRoom".equals(map.get("queryType"))){
+				hql.append(" and c.classId= ? ");
+				params.add(BaseConstants.CLASS_ROOM);
+				isActiveQuery=true;
+			}
+		}
+		if(!StrUtil.isNullOrEmpty(map.get("objId"))){
+			hql.append(" and c.objId= ? ");
+			params.add(map.get("objId"));
+		}
+		if(!isActiveQuery){
+			return null;
+		}
 		PageInfo pageInfo = super.findPageInfoByHQLAndParams(hql.toString(), params, 1, BaseConstants.QUERY_ROW_MAX);
+		List list=new ArrayList();
+		if(!map.containsKey("convert")){
+			if(pageInfo!=null&&pageInfo.getDataList()!=null&&pageInfo.getDataList().size()>0){
+				for(int i=0;i<pageInfo.getDataList().size();i++){
+					JSONObject jsObj=new JSONObject();
+					JSONObject destAcctItemRel=new JSONObject();
+					AcctItemRel acctItemRel=(AcctItemRel)pageInfo.getDataList().get(i);
+					EntityCopyUtil.populate(destAcctItemRel, acctItemRel,
+							new String[]{"price","floor","caculateMethodName","objName","caculateMethod"
+							,"acctItemTypeName","parentAcctItemTypeName","acctItemRelId","acctItemTypeId","parentAcctTypeId"});
+					list.add(destAcctItemRel);
+				}
+			}
+			pageInfo.setDataList(list);
+		}
 		return pageInfo;
 	}
 }

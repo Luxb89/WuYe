@@ -209,4 +209,12 @@
 			</result>
 		</action>
 	</package>
+	<package name="acctItemRel" extends="jsonAll">
+		<action name="acctItemRelAction" class="com.wuye.action.AcctItemRelAction">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success" type="json">
+				<param name="root">suc_info</param>
+			</result>
+		</action>
+	</package>
 </struts>    

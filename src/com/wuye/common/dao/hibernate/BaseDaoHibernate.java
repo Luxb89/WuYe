@@ -35,6 +35,13 @@ import com.wuye.common.util.date.DateUtil;
 import com.wuye.common.util.string.StrUtil;
 import com.wuye.common.vo.PageInfo;
 import com.wuye.constants.BaseConstants;
+import com.wuye.entity.BaseEntity;
+import com.wuye.entity.Building;
+import com.wuye.entity.Community;
+import com.wuye.entity.Organization;
+import com.wuye.entity.PropertyCompany;
+import com.wuye.entity.Room;
+import com.wuye.entity.User;
 
 /**
  * @版权：物业软件 版权所有 (c) 2007
@@ -1985,4 +1992,26 @@ public class BaseDaoHibernate extends HibernateDaoSupport implements Dao {
     public int jdbcQueryForInt(final String sql, final Object... args) {
         return this.getJdbcTemplate().queryForInt(sql, args);
     }
+    /**
+     * 通过class_id和对象id查询相应对象
+     * @param classId
+     * @param objId
+     * @return
+     */
+    public BaseEntity getObj(String classId, Integer objId) {
+		if(BaseConstants.CLASS_USER.equals(classId)){
+			return (User) this.getObject(User.class, objId);
+		}else if(BaseConstants.CLASS_COMPANY.equals(classId)){
+			return (PropertyCompany) this.getObject(PropertyCompany.class, objId);
+		}else if(BaseConstants.CLASS_COMMUNITY.equals(classId)){
+			return (Community) this.getObject(Community.class, objId);
+		}else if(BaseConstants.CLASS_ORG.equals(classId)){
+			return (Organization) this.getObject(Organization.class, objId);
+		}else if(BaseConstants.CLASS_BUILDING.equals(classId)){
+			return (Building) this.getObject(Building.class, objId);
+		}else if(BaseConstants.CLASS_ROOM.equals(classId)){
+			return (Room) this.getObject(Room.class, objId);
+		}
+		return null;
+	}
 }

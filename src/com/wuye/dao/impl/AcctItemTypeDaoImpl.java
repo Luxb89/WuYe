@@ -1,14 +1,20 @@
 package com.wuye.dao.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Repository;
 
 import com.wuye.common.dao.hibernate.BaseDaoHibernate;
+import com.wuye.common.util.bean.EntityCopyUtil;
 import com.wuye.common.util.string.StrUtil;
 import com.wuye.common.vo.PageInfo;
 import com.wuye.dao.AcctItemTypeDao;
+import com.wuye.entity.AcctItemRel;
+import com.wuye.entity.AcctItemType;
 @Repository(value="acctItemTypeDao")
 public class AcctItemTypeDaoImpl extends BaseDaoHibernate implements AcctItemTypeDao {
 	public PageInfo getAcctItemType(Map<String, Object> map) {
@@ -32,6 +38,20 @@ public class AcctItemTypeDaoImpl extends BaseDaoHibernate implements AcctItemTyp
 			}
 		}
 		PageInfo pageInfo = super.findPageInfoByHQLAndParams(hql.toString(), params, 0, 3000);
+		List list=new ArrayList();
+		if(!map.containsKey("convert")){
+			if(pageInfo!=null&&pageInfo.getDataList()!=null&&pageInfo.getDataList().size()>0){
+				for(int i=0;i<pageInfo.getDataList().size();i++){
+					JSONObject jsObj=new JSONObject();
+					JSONObject destAcctItemType=new JSONObject();
+					AcctItemType acctItemType=(AcctItemType)pageInfo.getDataList().get(i);
+					EntityCopyUtil.populate(destAcctItemType, acctItemType,
+							new String[]{"acctTypeName","acctItemTypeId","acctType","parentAcctTypeId","tempAcctItemTypeId"});
+					list.add(destAcctItemType);
+				}
+			}
+			pageInfo.setDataList(list);
+		}
 		return pageInfo;
 	}
 }

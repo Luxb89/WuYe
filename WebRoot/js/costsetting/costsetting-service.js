@@ -16,4 +16,13 @@ costSettingServiceApp.service("costSettingService", [ "commonService", function(
     this.queryCaculateMethod = function(params, sback, eback) {
         commonService.call("acctItemTypeAction!getAttrValue.action", params, sback, eback);
     };
+    this.saveAcctItemRel=function(params,sback,eback){
+    	commonService.call("acctItemRelAction!saveAcctItemRel.action",params,sback,eback);
+    }
+    this.queryAcctItemRels=function(params,sback,eback){
+    	commonService.call("acctItemRelAction!queryAcctItemRels.action",params,sback,eback);
+    }
+    this.removeAcctItemRel=function(params,sback,eback){
+    	commonService.call("acctItemRelAction!removeAcctItemRel.action",params,sback,eback);
+    }
 } ]);

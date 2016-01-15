@@ -36,6 +36,7 @@ public class BaseConstants {
 	public static String CLASS_ORG = "13";//组织类型
 	public static String CLASS_BUILDING = "14";//楼栋类型
 	public static String CLASS_ROOM = "15";//房间类型
+	public static String CLASS_ACCT_ITEM_TYPE="16";//费用类型
 
 	public static String ORG_TYPE_COMPANY = "10";//组织类型-物业类型
 	public static String ORG_TYPE_COMMUNITY = "11";//组织-小区类型

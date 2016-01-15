@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.wuye.common.util.string.StrUtil;
+
 /**
  * AcctItemType entity. @author MyEclipse Persistence Tools
  */
@@ -20,8 +22,13 @@ public class AcctItemType extends BaseEntity implements java.io.Serializable {
 	private Integer objId;
 	private Set acctItemRels = new HashSet(0);
 	private Set extraordinaryFees = new HashSet(0);
+	private AcctItemType parentAcctItemType=null;
 
 	// Constructors
+
+	public void setParentAcctItemType(AcctItemType parentAcctItemType) {
+		this.parentAcctItemType = parentAcctItemType;
+	}
 
 	/** default constructor */
 	public AcctItemType() {
@@ -110,5 +117,30 @@ public class AcctItemType extends BaseEntity implements java.io.Serializable {
 	public void setExtraordinaryFees(Set extraordinaryFees) {
 		this.extraordinaryFees = extraordinaryFees;
 	}
-
+	/**
+	 * 获取父类
+	 * @return
+	 */
+	public AcctItemType getParentAcctItemType(){
+		if(StrUtil.isNullOrEmpty(this.parentAcctItemType)
+				&&!StrUtil.isNullOrEmpty(this.parentAcctTypeId)){
+			this.parentAcctItemType=(AcctItemType) this.getDefaultDao().getObject(AcctItemType.class, this.parentAcctTypeId);
+		}
+		return this.parentAcctItemType;
+	}
+	public String getParentAcctItemTypeName(){
+		String acctItemTypeName="";
+		AcctItemType acctItemType=this.getParentAcctItemType();
+		if(acctItemType!=null){
+			acctItemTypeName=acctItemType.getAcctTypeName();
+		}
+		return acctItemTypeName;
+	}
+	/**
+	 * 绑定一个临时父类的id，用于界面绑定使用，和细类不冲突
+	 * @return
+	 */
+	public Integer getTempAcctItemTypeId(){
+		return this.getAcctItemTypeId();
+	}
 }

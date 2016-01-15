@@ -5,11 +5,11 @@
  * 
  * @author tanyw
  */
-var acctItemRelMainApp = angular.module("acctItemRelMainApp", ["commonApp","costSettingServiceApp", "propertyServiceApp",'ui.event', 'ui.autocomplete']);
+var acctItemRelApp = angular.module("acctItemRelApp", ["commonApp","costSettingServiceApp","directiveUtilApp", "propertyServiceApp",'ui.event', 'ui.autocomplete']);
 
-acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonService","costSettingService",
-		"propertyService", "$timeout", "$log","$compile",
-		function($scope, commonService,costSettingService, propertyService, $timeout, $log,$compile) {
+acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","costSettingService",
+		"propertyService", "$timeout", "$log","DirectiveUtil","$compile",
+		function($scope, commonService,costSettingService, propertyService, $timeout, $log,DirectiveUtil,$compile) {
 	
 		//加载出错，弹出提示框
 	    $scope.isSuccess = true;
@@ -20,6 +20,21 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
 			    setTimeout(function(){MESSAGE_DIALOG.close()},2000);
 			}
 	    });
+	    $scope.data=[{id:'1',name:"==小区=="},{id:'2',name:"==楼栋=="},{id:'3',name:"==楼层=="}];
+	    $scope.selectValue='1';
+	    $scope.show=function(value){
+	    	if(value=="2"){
+	    		$scope.showBuilding=true;
+	    		$scope.showFloor=false;
+	    	}else if(value=="3"){
+	    		$scope.showBuilding=true;
+	    		$scope.showFloor=true;
+	    	}else if(value=="1"){
+	    		$scope.showBuilding=false;
+	    		$scope.showFloor=false;
+	    	}
+	    }
+	    
         $scope.changeClass= function(obj){
         	var widget=obj.methods.widget();
         	widget.removeClass('ui-menu ui-corner-all ui-widget-content').addClass('dropdown-menu');
@@ -57,8 +72,6 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
                 select: function (event, ui) {
                     console.log('select', event, ui);
                     $scope.propertyCompany=ui.item;
-                    $scope.queryType="queryByCompany";
-                    $scope.objId=ui.item.companyId;
                 }
             }
         };
@@ -101,8 +114,6 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
         		},
         		select:function(event,ui){
         			$scope.community=ui.item;
-        			$scope.queryType="queryByCommunity";
-        			$scope.objId=ui.item.communityId;
         		}
         	}
         };
@@ -119,7 +130,7 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
         				return false;
         			}
         			propertyService.queryBuilding(
-        				{"inParma": JSON.stringify({"communityName" : request.term,"communityId":$scope.community.communityId,"fuzzy":true})
+        				{"inParma": JSON.stringify({"buildingName" : request.term,"communityId":$scope.community.communityId,"fuzzy":"true"})
         				},
         				function(data){
         					data=eval("("+data+")").data;
@@ -141,12 +152,18 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
         		change:function(event,ui){
         			if(ffc.util.isEmpty(ui.item)){
         				$scope.building=null;
+        				$scope.floors=null;
         			}
         		},
         		select:function(event,ui){
         			$scope.building=ui.item;
-        			$scope.queryType="queryByBuilding";
-        			$scope.objId=ui.item.buildingId;
+        			var floorCount=$scope.building.floorCount;
+        			floorCount=50;
+        			var floors=[];
+        			for(var tempCount=0;tempCount<floorCount;tempCount++){
+        				floors.push({"floorId":tempCount,"floorName":tempCount+"层"});
+        			}
+        			$scope.floors=floors;
         		}
         	}
         };
@@ -157,47 +174,48 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
         $scope.resetBuildingChild=function(){
         	$scope.building=null;
         };
-        $scope.queryAcctItemRels=function(){
-        	costSettingService.queryAcctItemRels({
-        		"inParma":JSON.stringify({"queryType":$scope.queryType,"objId":$scope.objId})
-        	},
-        		function(data){
-        			data=eval("("+data+")");
-        			if(data.result=="false"){
-        				$scope.isSuccess=false;
-        				return false;
-        			}
-        			$scope.acctItemRels=data.data;
-        		},
-        		function(){
-        			$scope.isSuccess=false;
-        		})
+        $scope.acctItemRels=[];
+        $scope.acctItemRels.push({acciItemRelId:1,acctItemType:"",childAcctItemType:""});
+        $scope.addAcctItemRel = function (obj) {
+        	var tempStr=(new Date()).valueOf();
+            $scope.acctItemRels.push({acciItemRelId:tempStr,acctItemType:"",childAcctItemType:""});
+            $scope.queryAcctItemTypeUps(tempStr);
+            $scope.queryCaculateMethod(tempStr);
         };
-        $scope.queryAcctItemRels();
-		//查询费用大类
-		$scope.queryAcctItemTypeUps=function(){
-			if(!ffc.util.isEmpty($scope.acctItemTypeUps)){
-				
-			}else{
-				costSettingService.queryAcctItemType({"inParma":JSON.stringify({"qryType":"top"})},
+	    $scope.removeAcctItemRel=function(acctItemRel){
+	    	if(!ffc.util.isEmpty(acctItemRel)){
+	    		var length=$scope.acctItemRels.length;
+		    	if(length!=1){
+		    		for(var i=0;i<length;i++){
+			    		if($scope.acctItemRels[i].acciItemRelId==acctItemRel.acciItemRelId){
+			    			$scope.acctItemRels.splice(i,1);
+			    		}
+		    		}
+		    	}
+	    	}
+	    };
+	    //查询费用大类
+		$scope.queryAcctItemTypeUps=function(number){
+			costSettingService.queryAcctItemType({"inParma":JSON.stringify({"qryType":"top"})},
 				function(data){
 					data=eval("("+data+")");
 					if(data.result=="false"){
 						$scope.isSuccess=false;
 						return false;
 					}
-					$scope.acctItemTypeUps=data.data;
-					},
-					function(){
-						$scope.isSuccess=false;
-					}
+					var acctItemTypeAll="acctItemTypeUps"+number;
+					$scope[acctItemTypeAll]=data.data;
+				},
+				function(){
+					$scope.isSuccess=false;
+				}
 				
-				);
-			}
+			);
 		}
+		$scope.queryAcctItemTypeUps(1);
 		//查询物业细类
-		$scope.queryAcctItemType=function(upAcctItemTypeId){
-			var acctItemTypeAll="acctItemTypes";
+		$scope.queryAcctItemType=function(upAcctItemTypeId,number){
+			var acctItemTypeAll="acctItemTypes"+number;
 			var acctItemTypeUp="acctItemTypesUp"+upAcctItemTypeId;
 			//如果已经通过上级取过下级了就不需要去库里面再取数据，加速界面的加载
 			if(!ffc.util.isEmpty($scope[acctItemTypeUp])){
@@ -244,6 +262,8 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
 				}
 			);
 		}
+		$scope.queryCaculateMethod(1);
+		
 		$scope.clickOk=function(){
 			$scope.acctItemType1;
 			$scope.propertyCompany;
@@ -263,67 +283,51 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
 		    		  $scope.queryRoom($scope.buildingUnit.buildingId);
 		    	  }
 		      }  
-		  });
-		 $scope.mod=function(acctItemRel){
-			 $scope.queryAcctItemTypeUps();
-			 $scope.queryAcctItemType(acctItemRel.parentAcctTypeId);
-			 $scope.queryCaculateMethod(1);
-			 $scope.acctItemRel=acctItemRel;
-//			 $scope.acctItemRel={acctItemRelId:acctItemRel.acctItemRelId,
-//				 parentAcctTypeId:acctItemRel.parentAcctTypeId,
-//				 acctItemTypeId:acctItemRel.acctItemTypeId,
-//				 price:acctItemRel.price,
-//				 caculateMethod:acctItemRel.caculateMethod};
-			 $("#myModal").modal('show');
-		 };
+		  });  
 		 $scope.onSave = function () {
+			 if($scope.selectValue=="1"){
+				 if(ffc.util.isEmpty([$scope.community][0])){
+				 MESSAGE_DIALOG.alert("小区必选!");
+				 return false;
+			 	}
+			 }else if($scope.selectValue=="2"){
+				 if(ffc.util.isEmpty([$scope.building][0])){
+				 MESSAGE_DIALOG.alert("楼栋必选!");
+				 return false;
+			 	}
+			 }else if($scope.selectValue=="3"){
+				 if(ffc.util.isEmpty([$scope.floor][0])){
+				 MESSAGE_DIALOG.alert("楼层必选!");
+				 return false;
+			 	}
+			 }
+			 $("#submit_btn").attr("disabled",true);
 			 // 保存逻辑
 			 // 服务请求
 			costSettingService.saveAcctItemRel({"inParma" : JSON.stringify({
-					"acctItemRels":[$scope.acctItemRel],
-					"isUpdate":"TRUE"
+					"propertyCompany" : $scope.propertyCompany,
+					"community" : $scope.community,
+					"building":$scope.building,
+					"acctItemRels":$scope.acctItemRels
 				})},
 				function(data) {
 					data = eval("(" + data + ")");
 					if (data.result=="false") {
 						MESSAGE_DIALOG.alert(data.msg);
+						$("#submit_btn").attr("disabled",false);
 						return false;
 					}
 					// 调用成功
-					$('#myModal').modal('hide');
+//					$('#myModal').modal('hide');
 					MESSAGE_DIALOG.alert("保存成功");
-					$scope.queryAcctItemRels();
 					setTimeout(function(){MESSAGE_DIALOG.close()
-						},1500);
-				},
-				function() {
-						$scope.isSuccess = false;
-					}
-				);
-		 };
-		 //删除
-		 $scope.removeAcctItemRel=function(){
-			 // 服务请求
-			costSettingService.removeAcctItemRel({"inParma" : JSON.stringify({
-					"acctItemRels":$scope.acctItemRels,
-					"selectAll":$scope.selectAll
-				})},
-				function(data) {
-					data = eval("(" + data + ")");
-					if (data.result=="false") {
-						MESSAGE_DIALOG.alert(data.msg);
-						return false;
-					}
-					// 调用成功
-					MESSAGE_DIALOG.alert("删除成功!");
-					$scope.queryAcctItemRels();
-					setTimeout(function(){MESSAGE_DIALOG.close()
+						location.href="accItemTypeSettingManager.jsp";
 					},1500);
 				},
 				function() {
 						$scope.isSuccess = false;
 					}
 				);
-	    };
+		 }
 });  
 } ]);

@@ -1021,7 +1021,7 @@ public class StrUtil {
      *        ==============================================================<br>
      */
     public static String nullToZero(String str) {
-        if (str == null || str.equals("")) {
+        if (str == null || str.equals("")||"null".equals(str)) {
             str = "0";
         }
         return str;

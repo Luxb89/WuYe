@@ -12,5 +12,5 @@ public interface AcctItemRelDao extends Dao {
 	public PageInfo getAcctItemType(Map<String, Object> map);
 	
 	public List<Building> getUnits(Building ownerBuilding);
-	public PageInfo getSimpleBuildingBycommunity(Map<String, Object> map);
+	public PageInfo queryAcctItemRels(Map<String, Object> map);
 }

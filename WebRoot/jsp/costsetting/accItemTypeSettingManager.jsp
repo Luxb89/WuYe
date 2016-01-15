@@ -14,17 +14,24 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/style.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/bootstrap/css/todc_bootstrap.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/themes.css'></c:url>" media="all">
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/tight-style.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/font/css/font-awesome.css'></c:url>" media="all" />
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/inside.css'></c:url>" media="all">
-<script type="text/javascript" src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/bootstrap/js/bootstrap.min.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/modal.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/public/defined-checkbox.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/jquery.myPagination.js'></c:url>"></script>
-<script type="text/javascript" src="<c:url value='/js/building/buildingList.js'></c:url>"></script>
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/defined-style.css'></c:url>" media="all">
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/public/jquery-ui.css'></c:url>" media="all">
 <title>物业管理-物业类型设置</title>
+<style type="text/css">
+.defind-label{
+	margin-left:10px;
+	margin-right: 0px;
+	display: inline;
+}
+.defind-div{
+ 	display: inline-block;
+}
+</style>
 </head>
-<body onload="loadRoleList()">
+<body ng-app="acctItemRelMainApp" ng-controller="acctItemRelMainController">
 <div id="main">
   <div class="container-fluid">
     <div class="row-fluid">
@@ -37,8 +44,22 @@
             <div class="span8">
               <form id="form1" name="form1">
                 <div class="form-horizontal pull-right">
-                  <input id="keyword-input" name="keywords" class="input-medium" placeholder="请输入费用类型名称" type="text">
-                  <input type="button" class="btn" id="search" onclick="loadRoleList()" value="查询">
+                	<label class="defind-label">请输入定位条件:</label>
+                	<input type="text" id="temp_pp_company" class="input-medium  search-query" placeholder="输入选择物业公司"
+											ng-model="propertyCompany.value"
+											ng-change="resetCommpanyChild()"
+											ui-event="{autocompletecreate:'changeClass(propertyCompanys)'}"
+											ui-autocomplete="propertyCompanys">
+					<input type="text" id="temp_community" class="input-medium search-query" placeholder="输入选择小区"
+											ng-model="community.companyName"
+											ng-change="resetBuildingChild()"
+											ui-event="{autocompletecreate:'changeClass(communitys)'}"
+											ui-autocomplete="communitys" >
+					<input type="text" id="buillding" class="input-medium search-query" placeholder="输入选择楼栋/单元"
+											ng-model="building.buildingName"
+											ui-event="{autocompletecreate:'changeClass(buildings)'}"
+											ui-autocomplete="buildings">                  
+					<input type="button" class="btn" id="search" ng-click="queryAcctItemRels()" value="查询">
                 </div>
               </form>
             </div>
@@ -46,8 +67,8 @@
           <div class="box-content">
             <div class="row-fluid">
               <div class="span12 control-group">
-                <div> <a class="btn" href="addAcctItemRelInfoTest.jsp"><i class="icon-plus"></i>新增费用类型</a> 
-                 <a class="btn" href="javascript:removeAcctItemType()"><i class="icon-remove"></i>删除费用类型</a> 
+                <div> <a class="btn" href="addAcctItemRelInfo.jsp"><i class="icon-plus"></i>新增费用类型</a> 
+                 <a class="btn" ng-click="removeAcctItemRel()" ><i class="icon-remove"></i>删除费用类型</a> 
                 <a class="btn" href="javascript:location.reload()"><i class="icon-refresh"></i>刷新</a> </div>
               </div>
             </div>
@@ -56,22 +77,27 @@
               ajax-url="/Wemedical/Diagnosis" ajax-length="0">
                 <thead>
                   <tr>
-                  	<th class="with-checkbox"><input class="check_all" id="check_all"
+                  	<th class="with-checkbox"><input ng-model="selectAll"
 												type="checkbox"></th>
-					          <!-- <th class="span2">物业公司名称</th> -->
-                  	<th >费用类型名称</th>
-                  	<th >费用大类名称</th>
-                  	<th >费用类型编码</th>
+					<th>费用大类</th>
+                  	<th >费用细类</th>
                   	<th >收费标准</th>
                   	<th >收费方式</th>
                     <th class="span2">操作</th>
                   </tr>
                 </thead>
                 <tbody>
-                	
+                	<tr ng-repeat="acctItemRel in acctItemRels">
+                		<td >
+                			<input type="checkbox" ng-checked="selectAll" ng-model="acctItemRel.selected"></td>
+                		<td>{{acctItemRel.parentAcctItemTypeName}}</td>
+                		<td>{{acctItemRel.acctItemTypeName}}</td>
+                		<td>{{acctItemRel.price}}</td>
+                		<td>{{acctItemRel.caculateMethodName}}</td>
+                		<td><button ng-click="mod(acctItemRel)" class="btn defined-role-btn">修改</button></td>
+                	</tr>
                 </tbody>
               </table>
-              <div class="sabrosus" id="demo"></div>
             </div>
           </div>
         </div>
@@ -79,7 +105,68 @@
     </div>
   </div>
 </div>
-
-<div id="fallr-overlay"> </div>
+<div class="modal fade hide" id="myModal" tabindex="-1" role="dialog"
+	   aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	            <form class="form-horizontal" name="myForm" novalidate>
+	            	<div class="form-group">
+	            		<label class="col-sm-2 control-label">费用大类：</label>
+					  	<select class="col-sm-10" ng-model="acctItemRel.parentAcctTypeId" 
+					  	disabled="true"
+								               	ng-change="queryAcctItemType(acctItemRel.parentAcctTypeId)"
+								               	ng-options="acctItemRel.acctItemTypeId as 
+												acctItemRel.acctTypeName for acctItemRel in acctItemTypeUps" required></select>
+						<span style="color:red" >*</span>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">费用细类：</label>
+					  	<select class="col-sm-10" disabled="true"
+												ng-model="acctItemRel.acctItemTypeId"
+												ng-options="acctItemRel.acctItemTypeId as
+												acctItemRel.acctTypeName for acctItemRel in acctItemTypes{{acctItemRel.acciItemRelId}}"
+												required></select> 
+					  	<span style="color:red" >*</span>
+					</div>
+					<div class="form-group">
+	            		<label class="col-sm-2 control-label">收费标准：</label>
+	            		<input class="col-sm-10" style="width: 38.1%" type="number" step="any" id="price" min="0" ng-model="acctItemRel.price"  required>
+						<span style="color:red" >*</span>
+					</div>
+					<div class="form-group">
+	            		<label class="col-sm-2 control-label">计算方式：</label>
+					  	<select class="col-sm-10" id="acctItemTypeName" 
+													ng-model="acctItemRel.caculateMethod" 
+													ng-options="acctItemRel.attrValue as
+													acctItemRel.attrValueName for acctItemRel in caculateMethods"
+													></select>  
+						<span style="color:red" >*</span>
+					</div>
+				</form>
+			</div>
+	         <div class="modal-footer" >
+	            <button class="btn btn-primary" ng-disabled="!myForm.$valid" ng-click="onSave()">
+  					确定
+	            </button>
+	         </div>
+	      </div>
+	   </div>
+	</div>
 </body>
+<script type="text/javascript" src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/public/jquery-ui.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/bootstrap/js/bootstrap.min.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/angularJS/angular-ie8-1.4.7.min.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/modal.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/json2.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/public/defined-checkbox.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.myPagination.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/component/message-dialog-comp/js/message-dialog.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/common/common.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/costsetting/costsetting-service.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/jsp/mobile/property/property-service.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/costsetting/acctitemrel-manager-controller.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/costsetting/autocomplete.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/costsetting/event.js'></c:url>"></script>
 </html>

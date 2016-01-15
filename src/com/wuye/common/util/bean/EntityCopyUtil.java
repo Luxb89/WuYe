@@ -1,15 +1,13 @@
 package com.wuye.common.util.bean;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-
 import net.sf.json.JSONObject;
 
+import com.wuye.entity.AcctItemRel;
+import com.wuye.entity.AcctItemType;
 import com.wuye.entity.Address;
 import com.wuye.entity.Area;
 import com.wuye.entity.AttrSpec;
 import com.wuye.entity.AttrValue;
-import com.wuye.entity.BaseEntity;
 import com.wuye.entity.Building;
 import com.wuye.entity.BuildingType;
 import com.wuye.entity.Community;
@@ -55,6 +53,28 @@ public class EntityCopyUtil {
 			property = new String[]{"buildingId","buildingName","buildingType",
 					"phone","floorCount","stairArea","userableArea","afforestArea","ownershipType",
 					"buildingStructure","upgradeCondition","finishTime","statusCd"};
+		}
+		for (String prop : property){
+			populate(dest,src,prop);
+		}
+	}
+	public static void populate(JSONObject dest, AcctItemRel src, String[] property){
+		if (dest == null || src == null){
+			return;
+		}
+		if (property == null || property.length == 0){
+			property = new String[]{"price","floor","caculateMethod","objName"};
+		}
+		for (String prop : property){
+			populate(dest,src,prop);
+		}
+	}
+	public static void populate(JSONObject dest, AcctItemType src, String[] property){
+		if (dest == null || src == null){
+			return;
+		}
+		if (property == null || property.length == 0){
+			property = new String[]{"acctTypeName","acctItemTypeId","acctType","parentAcctTypeId"};
 		}
 		for (String prop : property){
 			populate(dest,src,prop);
@@ -202,6 +222,16 @@ public class EntityCopyUtil {
 			BeanUtilsExtend.populate(dest, src, new String[]{"roomNbr","floor","buildingStructure","housingOrientation",
 					"usingState","upgradeCondition","housingFeeRate",
 					"upgradeStartDate","upgradeEndDate","housedDate"});
+		}
+	}
+	public static void populate(AcctItemRel dest, JSONObject src, String[] property){
+		if (dest == null || src == null){
+			return;
+		}
+		if (property != null && property.length > 0){
+			BeanUtilsExtend.populate(dest, src, property);
+		}else{
+			BeanUtilsExtend.populate(dest, src, new String[]{"price","floor","caculateMethod"});
 		}
 	}
 	public static void populate(JSONObject dest, BuildingType src, String[] property){

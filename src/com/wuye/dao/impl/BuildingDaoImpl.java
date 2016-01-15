@@ -37,7 +37,7 @@ public class BuildingDaoImpl extends BaseDaoHibernate implements BuildingDao {
 			}
 		}
 		if (!StrUtil.isNullOrEmpty(map.get("communityId"))) {
-		    hql.append(" and c.community.communityId = ? ");
+		    hql.append(" and c.communityId = ? ");
             params.add(map.get("communityId"));
 		}
 		if (buildingId != null && !buildingId.equals(0)){
