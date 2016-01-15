@@ -9,10 +9,14 @@
         <id name="acctItemRelId" type="java.lang.Integer">
             <column name="acct_item_rel_id" />
             <generator class="native" />
-        </id>
+        </id><!--
         <many-to-one name="acctItemType" class="com.wuye.entity.AcctItemType" fetch="select">
             <column name="acct_item_type_id" />
         </many-to-one>
+        -->
+        <property name="acctItemTypeId" type="java.lang.Integer">
+            <column name="acct_item_type_id" />
+        </property>
         <property name="classId" type="java.lang.String">
             <column name="class_id" length="2">
                 <comment>10：小区，11：楼栋或单元，12：房间</comment>
