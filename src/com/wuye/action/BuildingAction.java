@@ -108,6 +108,9 @@ public class BuildingAction extends ActionSupport{
 			if (!StrUtil.isNullOrEmpty(json.get("ownerBuilding"))){
                 paramMap.put("ownerBuilding", NumericUtil.nullToIntegerZero(json.get("ownerBuilding")));
             }
+			if(!StrUtil.isNullOrEmpty(json.get("fuzzy"))){
+                paramMap.put("fuzzy", StrUtil.strnull(json.get("fuzzy")));
+			}
 			String type = StrUtil.strnull(json.get("qryType"));
 			RetVO retvo = null;
 			if (type.equals("getSimpleBuildingBycommunity")){
