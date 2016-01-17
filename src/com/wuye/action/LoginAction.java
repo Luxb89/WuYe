@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.wuye.common.util.string.StrUtil;
+import com.wuye.entity.Community;
 import com.wuye.entity.Role;
 import com.wuye.entity.User;
 import com.wuye.services.LoginService;
@@ -59,6 +60,10 @@ public class LoginAction extends ActionSupport{
 				ctx.getSession().put("user", user);
 				if(user.getOwnerCompany()!=null){
 					ctx.getSession().put("companyId", user.getOwnerCompany().getCompanyId());
+				}
+				Community ownerCommunity = user.getOwnerCommunity();
+				if (ownerCommunity != null){
+					ctx.getSession().put("communityId", ownerCommunity.getId());
 				}
 				List<Role> roleList = roleServiceManager.getRoleListByUserId(user.getId());
 				ctx.getSession().put("roleList", roleList);

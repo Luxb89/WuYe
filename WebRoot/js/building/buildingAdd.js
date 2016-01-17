@@ -5,49 +5,17 @@ $(document).ready(function() {
 	company.complete();
 	
 });
-function addRow(num){
+function addRow(obj){
+	$(obj).parents("#buildings a").attr("disabled","true");
+	var cloneRow = $(obj).parents(".building-row").clone();
 	
-	$(".icon-plus").parent("#buildings a").attr("disabled","true").attr('href', 'javascript:void(0);');
-	num = num+1;
-	$("#buildings").append('<div class="row-fluid" id="building'+num+'">' +
-	'										<div class="span4">' +
-	'											<div class="control-group">' +
-	'												<label class="tight-label" for="buildingName">楼栋/单元名称</label>' +
-	'												<div class="tight-control">' +
-	'													<input type="text" id="buildingName" name="buildingName"' +
-	'														class=""> <span class="maroon">*</span>' +
-	'												</div>' +
-	'											</div>' +
-	'										</div>' +
-	'										<div class="span2">' +
-	'											<div class="control-group">' +
-	'												<label class="tight-label" for="ownerBuilding">所属楼栋</label>' +
-	'												<select name="type" id="ownerBuilding" style="width: 100px;">' +
-	'												</select>' +
-	'											</div>' +
-	'										</div>' +
-	'										<div class="span2">' +
-	'											<div class="control-group">' +
-	'												<label class="tight-label" for="floorCount"' +
-	'													style="display: inline">楼层数</label>' +
-	'												<div class="tight-control">' +
-	'													<input type="text" style="width:30px" id="floorCount" name="floorCount">' +
-	'												</div>' +
-	'											</div>' +
-	'										</div>' +
-	'										<div class="span2">' +
-	'											<a class="btn" href="javascript:addRow('+num+')"><i class="icon-plus"></i>新增</a> <a class="btn" href="javascript:removeRow('+num+')"><i '+
-	'												class="icon-minus"></i>删除</a> '+
-	'										</div> '+
-	'									</div> ');
-	$("#building"+num+" select").append($("#building"+(num-1)+" option").clone());
+	$("#buildings").append(cloneRow);
 }
-function removeRow(num){
-	var len = $("#buildings .row-fluid").length ;
+
+function removeRow(obj){
+	var len = $("#buildings .building-row").length ;
 	if (len != 1){
-		if ($("#building"+num + " a:first").attr("disabled") == "disabled"){
-			$("#building"+num).remove();
-		}
+		$(obj).parents(".building-row").remove();
 	}
 }
 function saveBuildings(){

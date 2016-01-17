@@ -65,6 +65,9 @@
 .defind-div {
 	display: inline-block;
 }
+.building-row{
+	padding-top:5px;
+}
 </style>
 </head>
 <body>
@@ -121,53 +124,38 @@
 									
 								</div> -->
 						<div class="box-content">
-							<form id="communityform" method="post"
+							<form id="buildingform" method="post"
 								class="form-horizontal form-validate" novalidate>
-
-
-								<div id="buildings" class="box-content">
-									<div class="row-fluid" id="building1">
-										<div class="span4">
-											<div class="control-group">
-												<label class="tight-label" for="buildingName">楼栋/单元名称</label>
-												<div class="tight-control">
-													<input type="text" id="buildingName" name="buildingName"
-														class=""> <span class="maroon">*</span>
-												</div>
+								<div id="buildings" class="control-group"
+									style="margin-bottom: 100px;">
+									<div class="row-fluid building-row">
+										<div class="span12">
+											<div class="span3 defind-div ">
+												<label class="defind-label" for="buildingName">楼栋/单元名称</label> <input
+													type="text" style="width: 40%" id="buildingName" name="buildingName"
+													class=""> <span class="maroon">*</span>
 											</div>
-
-										</div>
-										<div class="span2">
-											<div class="control-group">
-												<label class="tight-label" for="ownerBuilding">所属楼栋</label>
-												<select name="type"  id="ownerBuilding" style="width: 100px;">
-												</select>
+											<div class="defind-div span2" style="margin-left:10px">
+												<label class="defind-label" for="ownerBuilding">所属楼栋</label>
+												<select name="type" id="ownerBuilding" style="width: 50%;"></select>
 											</div>
-										</div>
-										<div class="span2">
-											<div class="control-group">
-												<label class="tight-label" for="floorCount"
-													style="display: inline">楼层数</label>
-		<!-- style="width:20px" -->
-												<div class="tight-control">
-													<input type="text" style="width:30px"  id="floorCount" name="floorCount">
-												</div>
+											<div class="span2 defind-div " style="margin-left:10px">
+												<label class="defind-label" for="floorCount">楼层数</label> <input type="text"
+													style="width: 20%" id="floorCount" name="floorCount">
 											</div>
-
-										</div>
-										<div class="span2">
-											<a class="btn" href="javascript:addRow(1)"><i
-												class="icon-plus"></i>新增</a> <a class="btn"
-												href="javascript:removeRow(1)"><i class="icon-minus"></i>删除</a>
+											<div class="defind-div span2">
+												<a class="btn" href="javascript:void(0)"
+													onclick="addRow(this)"><i class="icon-plus"></i>新增</a> <a
+													class="btn" href="javascript:void(0)"
+													onclick="removeRow(this)"><i class="icon-minus"></i>删除</a>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="control-group">
-									<div class="controls">
+								<div class="controls">
 										<input id="submit_btn" type="button" class="btn btn-primary"
 											value="提交">
 									</div>
-								</div>
 							</form>
 						</div>
 					</div>

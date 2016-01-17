@@ -9,6 +9,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.wuye.common.exception.RtManagerException;
 import com.wuye.common.util.SpringUtil;
 import com.wuye.common.util.date.DateUtil;
 import com.wuye.common.util.numeric.NumericUtil;
@@ -191,6 +192,12 @@ public class PropertyCompany extends BaseEntity implements java.io.Serializable 
 	}
 	
 	public void remove(){
+		//判断是否有小区 
+		String hql = "SELECT 1 FROM DUAL WHERE EXISTS ( SELECT 1 FROM community c WHERE c.company_id = ? ) ";
+		int count = super.getDefaultDao().jdbcQueryForInt(hql,this.getId());
+		if (count > 0){
+			throw new RtManagerException("请先删除物业公司下所有小区数据再删除物业公司");
+		}
 		super.remove();
 		if (this.getCompanyInfo() != null){
 			this.getCompanyInfo().getPropertyCompanies().remove(this);

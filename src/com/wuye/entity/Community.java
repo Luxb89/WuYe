@@ -7,6 +7,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.wuye.common.exception.RtManagerException;
 import com.wuye.common.util.SpringUtil;
 import com.wuye.common.util.numeric.NumericUtil;
 import com.wuye.common.util.string.StrUtil;
@@ -253,6 +254,12 @@ public class Community extends BaseEntity implements java.io.Serializable {
 		return (CommunityServiceManager)SpringUtil.getBean("communityServiceManager");
 	}
 	public void remove(){
+		//判断是否有楼栋
+		String hql = "SELECT 1 FROM DUAL WHERE EXISTS ( SELECT 1 FROM building c WHERE c.community_id = ? ) ";
+		int count = super.getDefaultDao().jdbcQueryForInt(hql,this.getId());
+		if (count > 0){
+			throw new RtManagerException("请先删除小区下所有楼栋/单元数据再删除小区");
+		}
 		super.remove();
 		if (this.getCommunityInfo() != null){
 //			this.getCommunityInfo().getCommunities().remove(this);

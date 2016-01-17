@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.wuye.constants.BaseConstants;
+
 
 /**
  * Organization entity. @author MyEclipse Persistence Tools
@@ -25,6 +27,11 @@ public class Organization extends BaseEntity implements java.io.Serializable {
 	 * 组织所属物业公司
 	 */
 	private PropertyCompany ownerCompany ; 
+	
+	/**
+	 * 组织所属小区
+	 */
+	private Community ownerCommunity;
 	/**
 	 * 上级组织
 	 */
@@ -205,5 +212,42 @@ public class Organization extends BaseEntity implements java.io.Serializable {
 		this.allChild = this.getChild();
 		this.Loaded("allChild");
 		return this.allChild;
+	}
+
+	/**
+	 * 取组合关联的小区
+	 * @return
+	 */
+	public Community getOwnerCommunity() {
+		if (this.isLoaded("ownerCommunity", this.ownerCommunity)){
+			return this.ownerCommunity;
+		}
+		
+		if (BaseConstants.ORG_TYPE_COMPANY.equals(this.getOrgType())){
+			//组织是物业公司
+			this.ownerCommunity = null;
+			this.Loaded("ownerCommunity");
+			return this.ownerCommunity;
+		}else if (BaseConstants.ORG_TYPE_COMMUNITY.equals(this.getOrgType())){
+			//组织类型为小区
+			String hql = "from Community c where c.organization.orgId = ? ";
+			List<Object> params = new ArrayList<Object>();
+			params.add(this.getId());
+			List<Community> communities = super.getDefaultDao().findListByHQLAndParams(hql, params, BaseConstants.QUERY_ROW_MAX);
+			if (communities != null && communities.size()>0){
+				this.ownerCommunity = communities.get(0);
+			}
+			this.Loaded("ownerCommunity");
+			return this.ownerCommunity;
+		}else{
+			//其它类型
+			Organization tmpUpOrg = this;
+			while(this.getUpOrganization() != null){
+				tmpUpOrg = tmpUpOrg.getUpOrganization();
+			}
+			this.ownerCommunity = tmpUpOrg.getOwnerCommunity();
+			this.Loaded("ownerCommunity");
+			return this.ownerCommunity;
+		}
 	}
 }

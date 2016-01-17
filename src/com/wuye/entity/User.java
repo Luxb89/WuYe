@@ -29,7 +29,9 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Getter
 	@Setter
 	private PropertyCompany ownerCompany;
-	
+	@Getter
+	@Setter
+	private Community ownerCommunity;
 	private PartyInfo partyInfo;
 	@Getter
 	@Setter
@@ -123,7 +125,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 		this.userOrgRels = userOrgRels;
 	}
 	
-	/*public PropertyCompany getOwnerCompany(){
+	public PropertyCompany getOwnerCompany(){
 		if (this.isLoaded("ownerCompany", this.ownerCompany)){
 			return this.ownerCompany;
 		}
@@ -145,7 +147,34 @@ public class User extends BaseEntity implements java.io.Serializable {
 			return this.ownerCompany;
 		}
 		
-	}*/
+	}
+	/**
+	 * 取用户所属小区 chaijinchun 20160117
+	 * @return
+	 */
+	public Community getOwnerCommunity(){
+		if (this.isLoaded("ownerCommunity", this.ownerCommunity)){
+			return this.ownerCommunity;
+		}
+		if (this.getUserOrgRels() != null && this.getUserOrgRels().size() > 0){
+			List<UserOrgRel> userOrgs = new ArrayList<UserOrgRel>(this.getUserOrgRels());
+			if (userOrgs.get(0).getOrganization() == null){
+				this.ownerCommunity = null;
+				this.Loaded("ownerCommunity");
+				return this.ownerCommunity;
+			}else{
+				Organization org = userOrgs.get(0).getOrganization();
+				this.ownerCommunity = org.getOwnerCommunity();
+				this.Loaded("ownerCommunity");
+				return this.ownerCommunity;
+			}
+		}else{
+			this.ownerCommunity = null;
+			this.Loaded("ownerCommunity");
+			return this.ownerCommunity;
+		}
+		
+	}
 	
 	public PartyInfo getPartyInfo(){
 		if (this.isLoaded("partyInfo", this.partyInfo)){
