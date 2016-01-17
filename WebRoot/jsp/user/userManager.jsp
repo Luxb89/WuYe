@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="/jsp/public/head.jsp"></jsp:include>
 <script type="text/javascript" src="<c:url value='/js/user/userManager.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/public/StrUtil.js'></c:url>"></script>
 
 <title>物业管理-用户管理</title>
 </head>

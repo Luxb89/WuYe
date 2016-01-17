@@ -264,7 +264,7 @@ public class EntityCopyUtil {
 		}
 		
 		if (property == null || property.length == 0){
-			property = new String[]{"userId","account","userType"};
+			property = new String[]{"userId","account","userType","statusName"};
 		}
 		for (String prop : property){
 			populate(dest,src,prop);

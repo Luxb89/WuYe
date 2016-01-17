@@ -234,12 +234,15 @@ public class UserAction extends ActionSupport{
                     for (Object obj : dataList){
                         User user = (User)obj;
                         PartyInfo partyInfo = user.getPartyInfo() ;
-                        Address address = partyInfo.getAddress();
                         JSONObject jsobj = EntityCopyUtil.getJSONObject(user,null);
-                        jsobj.put("partyInfo", EntityCopyUtil.getJSONObject(partyInfo,null));
-                        PropertyCompany company = user.getOwnerCompany();
-                        jsobj.put("company", EntityCopyUtil.getJSONObject(company,null));
-                        jsobj.put("address", EntityCopyUtil.getJSONObject(address,null));
+                        if (partyInfo != null){
+                        	jsobj.put("partyInfo", EntityCopyUtil.getJSONObject(partyInfo,null));
+                        	Address address = partyInfo.getAddress();
+                            PropertyCompany company = user.getOwnerCompany();
+                            jsobj.put("company", EntityCopyUtil.getJSONObject(company,null));
+                            jsobj.put("address", EntityCopyUtil.getJSONObject(address,null));
+                        }
+                        
                         jsArray.add(jsobj);
                         pg.put("dataList", jsArray);
                     }

@@ -76,19 +76,26 @@ function callBack(data){
 	data = eval("("+data+")");
 	$(data.pageInfo.dataList).each(function(ix,ite){
 		var trStr = '<tr>';
-		var strValue = ite.userId + ";" + ite.partyInfo.partyInfoId+";"+ ite.address.addressId;
+		var strValue = ite.userId 
+		if (!StrUtil.isEmpty(ite.partyInfo)){
+			strValue = strValue + ";" + StrUtil.strnull(ite.partyInfo.partyInfoId);
+		}else{
+			strValue = strValue + ";";
+		}
+		
+		if (!StrUtil.isEmpty(ite.address)){
+			strValue = strValue + StrUtil.strnull(ite.address.addressId);
+		}
 		trStr += '<td class="with-checkbox"><input type="checkbox" name="check" value="'+strValue +'" /></td>';
 		trStr += '<td>'+ite.account+'</td>';
-		if (ite.partyInfo != null
-				&& ite.partyInfo.partyName != null) {
-			trStr += '<td>'+ite.partyInfo.partyName+'</td>';
+		if (!StrUtil.isEmpty(ite.partyInfo)) {
+			trStr += '<td>'+StrUtil.strnull(ite.partyInfo.partyName)+'</td>';
 		} else {
 			trStr += '<td></td>';
 		}
 		
-		if (ite.partyInfo != null
-				&& ite.partyInfo.partyName != null) {
-			trStr += '<td>'+ite.partyInfo.mobile+'</td>';
+		if (!StrUtil.isEmpty(ite.partyInfo)) {
+			trStr += '<td>'+StrUtil.strnull(ite.partyInfo.mobile)+'</td>';
 		} else {
 			trStr += '<td></td>';
 		}
@@ -102,11 +109,12 @@ function callBack(data){
 		}
 		
 		trStr += '<td>'+ite.account+'</td>';
-		if (ite.statusCd =='1000') {
+		trStr += '<td>' + StrUtil.strnull(ite.statusName) + '</td>';
+		/*if (ite.statusCd =='1000') {
 			trStr += '<td>生效</td>';
 		} else {
 			trStr += '<td>失效</td>';
-		}
+		}*/
 		
 		trStr += '<td><a href="addUserInfo.jsp?userId='+ite.userId+'" data-toggle="modal" class="btn defined-role-btn" id="btn_edit_user_"'+ite.userId+'>修改</a>';
 		trStr +='<a href="addUserInfo.jsp?userId='+ite.userId+'" class="btn defined-role-btn" >详情</a></td>';
