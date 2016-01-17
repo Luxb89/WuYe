@@ -85,18 +85,24 @@ public class AcctItemRelDaoImpl extends BaseDaoHibernate implements AcctItemRelD
 				hql.append(" and c.classId= ? ");
 				params.add(BaseConstants.CLASS_BUILDING);
 				isActiveQuery=true;
-			}else if("queryByRoom".equals(map.get("queryType"))){
+			}else if("queryByFloor".equals(map.get("queryType"))){
 				hql.append(" and c.classId= ? ");
-				params.add(BaseConstants.CLASS_ROOM);
+				params.add(BaseConstants.CLASS_FLOOR);
 				isActiveQuery=true;
 			}
 		}
-		if(!StrUtil.isNullOrEmpty(map.get("objId"))){
-			hql.append(" and c.objId= ? ");
-			params.add(map.get("objId"));
-		}
 		if(!isActiveQuery){
 			return null;
+		}
+		if(!StrUtil.isNullOrEmpty(map.get("objId"))){
+			if("queryByFloor".equals(map.get("queryType"))){
+				hql.append(" and c.floor= ? ");
+				params.add(map.get("objId"));
+			}else{
+				hql.append(" and c.objId= ? ");
+				params.add(map.get("objId"));
+			}
+			
 		}
 		PageInfo pageInfo = super.findPageInfoByHQLAndParams(hql.toString(), params, 1, BaseConstants.QUERY_ROW_MAX);
 		List list=new ArrayList();

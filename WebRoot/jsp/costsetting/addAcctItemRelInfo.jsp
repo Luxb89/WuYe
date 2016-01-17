@@ -41,6 +41,10 @@
 	padding: 20px;
 	/* background: #fff; */
 }
+.defined-modal-input{
+	position: absolute;
+    z-index:1051;
+}
 </style>
 	</head>
 	<body ng-app="acctItemRelApp" ng-controller="acctItemRelController">
@@ -65,7 +69,7 @@
 									<form class="box-content pull-right" name="myForm" novalidate>
 										<table  class="table table-hover">
 											<tr class="row-fluid ">
-												<td>
+												<!--<td>
 													<select ng-model="selectValue" style="width: 100px;"
 													ng-change="show(selectValue)"
 													ng-options="item.id as item.name for item in data"></select>
@@ -103,6 +107,8 @@
 													></select>
 													<span style="color:red" >*</span>
 												</td>
+											-->
+											<input class="defined-input" type="text" ng-click="showQueryModel()" class="input-medium search-query" placeholder="点我搜搜更懂您!"/>
 											</tr>
 										</table>
 									</form>			
@@ -181,7 +187,57 @@
 			</div>
 		</div>
 		<div id="fallr-overlay"></div>
-	</body>
+<div class="modal fade hide" id="queryModal" tabindex="-1" role="dialog"
+	   aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	   		<form class="form-horizontal" name="myForm" novalidate>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">定位条件:</label>
+					<select class="col-sm-10" ng-model="selectValue"
+					ng-change="show(selectValue)"
+					ng-options="item.id as item.name for item in data"></select>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">物业公司</label>
+					<input class="col-sm-10" type="text" id="temp_pp_company" class="input-medium  search-query" placeholder="输入择物业公司"
+					ng-model="propertyCompany.value"
+					ng-change="resetCommpanyChild()"
+					ui-event="{autocompletecreate:'changeClass(propertyCompanys)'}"
+					ui-autocomplete="propertyCompanys" required>
+					<span style="color:red" >*</span> 
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">小区</label>
+					<input  class="col-sm-10" type="text" id="temp_community" class="input-medium search-query" placeholder="输入择小区"
+					ng-model="community.companyName"
+					ng-change="resetBuildingChild()"
+					ui-event="{autocompletecreate:'changeClass(communitys)'}"
+					ui-autocomplete="communitys" required>
+					<span style="color:red" >*</span>
+				</div>
+				<div class="form-group" ng-show="showBuilding" >
+					<label class="col-sm-2 control-label">楼栋/单元</label>
+					<input class="col-sm-10" type="text" id="buillding" class="input-medium search-query" placeholder="输入择楼栋/单元"
+					ng-model="building.buildingName"
+					ui-event="{autocompletecreate:'changeClass(buildings)'}"
+					ui-autocomplete="buildings" required>
+					<span style="color:red" >*</span>
+				</div>
+				<div class="form-group" ng-show="showFloor" >
+					<label class="col-sm-2 control-label">楼层</label>
+					<select class="col-sm-10" ng-model="floor.floorId" class="input-medium search-query"
+					ng-options="floor.floorId as floor.floorName  for floor in floors"
+					></select>
+					<span style="color:red" >*</span>
+				</div>
+			</form>
+	  		</div>
+	      </div>
+	   </div>
+</div>
+</body>
 <script type="text/javascript" src="<c:url value='/js/jquery-1.9.1.min.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/js/public/jquery-ui.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/bootstrap/js/bootstrap.min.js'></c:url>"></script>

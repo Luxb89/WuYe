@@ -37,7 +37,9 @@ public class BaseConstants {
 	public static String CLASS_BUILDING = "14";//楼栋类型
 	public static String CLASS_ROOM = "15";//房间类型
 	public static String CLASS_ACCT_ITEM_TYPE="16";//费用类型
-
+	public static String CLASS_FLOOR="17";//楼层本来作为一个属性存在楼栋上面的，单独拿出来做一个class，方便开发
+	
+	
 	public static String ORG_TYPE_COMPANY = "10";//组织类型-物业类型
 	public static String ORG_TYPE_COMMUNITY = "11";//组织-小区类型
 	public static String ORG_TYPE_OTHER = "12";//组织-其他类型

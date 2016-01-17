@@ -65,7 +65,7 @@ public class AcctItemRelAction extends ActionSupport{
 					map.put("msg", "保存信息成功");
 				}else {
 					map.put("result", "false");
-					map.put("msg", "保存信息失败");
+					map.put("msg", "保存信息失败:"+retVo.getRetMsg());
 				}
 			}
 		} catch (Exception e) {

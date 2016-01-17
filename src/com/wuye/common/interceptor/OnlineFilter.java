@@ -62,7 +62,7 @@ public class OnlineFilter implements Filter, StrutsStatics {
 		String url=req.getRequestURL().toString();
 		String project="";
 		if(!uri.equals("/")){
-			if(uri.indexOf("WuYe")>0){
+			if(uri.indexOf("wuye")>0){
 				project=uri.substring(0, uri.indexOf("/", 1)+1);
 			}else{
 				project=uri.substring(0, uri.indexOf("/", 0)+1);

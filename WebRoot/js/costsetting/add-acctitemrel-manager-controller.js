@@ -20,24 +20,27 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 			    setTimeout(function(){MESSAGE_DIALOG.close()},2000);
 			}
 	    });
-	    $scope.data=[{id:'1',name:"==小区=="},{id:'2',name:"==楼栋=="},{id:'3',name:"==楼层=="}];
-	    $scope.selectValue='1';
+	    $scope.data=[{id:'12',name:"==小区=="},{id:'14',name:"==楼栋=="},{id:'17',name:"==楼层=="}];
+	    $scope.selectValue='12';
 	    $scope.show=function(value){
-	    	if(value=="2"){
+	    	if(value=="14"){
 	    		$scope.showBuilding=true;
 	    		$scope.showFloor=false;
-	    	}else if(value=="3"){
+	    	}else if(value=="17"){
 	    		$scope.showBuilding=true;
 	    		$scope.showFloor=true;
-	    	}else if(value=="1"){
+	    	}else if(value=="12"){
 	    		$scope.showBuilding=false;
 	    		$scope.showFloor=false;
 	    	}
 	    }
-	    
+	    $scope.showQueryModel=function(){
+	    	$("#queryModal").modal("show");
+	    }
         $scope.changeClass= function(obj){
         	var widget=obj.methods.widget();
-        	widget.removeClass('ui-menu ui-corner-all ui-widget-content').addClass('dropdown-menu');
+        	widget.removeClass('ui-menu ui-corner-all ui-widget-content').addClass('dropdown-menu')
+        	.addClass("defined-modal-input");
         }
         $scope.propertyCompanys = {
             options: {
@@ -138,7 +141,7 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
         						$scope.isSuccess=false;
         					}
         					response($.map(data,function(item){
-        						return { label: item.buildingName, value: item.buildingName, buildingId : item.buildingId }
+        						return { label: item.buildingName, value: item.buildingName, building : item }
         					}));
         				},
         				function(){
@@ -156,14 +159,17 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
         			}
         		},
         		select:function(event,ui){
+        			$scope.building=null;
         			$scope.building=ui.item;
-        			var floorCount=$scope.building.floorCount;
-        			floorCount=50;
+        			var floorCount=$scope.building.building.floorCount;
         			var floors=[];
-        			for(var tempCount=0;tempCount<floorCount;tempCount++){
+        			if(!ffc.util.isEmpty(floorCount)){
+        				for(var tempCount=1;tempCount<=floorCount;tempCount++){
         				floors.push({"floorId":tempCount,"floorName":tempCount+"层"});
+	        			}
         			}
         			$scope.floors=floors;
+        			
         		}
         	}
         };
@@ -285,17 +291,17 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 		      }  
 		  });  
 		 $scope.onSave = function () {
-			 if($scope.selectValue=="1"){
+			 if($scope.selectValue=="12"){
 				 if(ffc.util.isEmpty([$scope.community][0])){
 				 MESSAGE_DIALOG.alert("小区必选!");
 				 return false;
 			 	}
-			 }else if($scope.selectValue=="2"){
+			 }else if($scope.selectValue=="14"){
 				 if(ffc.util.isEmpty([$scope.building][0])){
 				 MESSAGE_DIALOG.alert("楼栋必选!");
 				 return false;
 			 	}
-			 }else if($scope.selectValue=="3"){
+			 }else if($scope.selectValue=="17"){
 				 if(ffc.util.isEmpty([$scope.floor][0])){
 				 MESSAGE_DIALOG.alert("楼层必选!");
 				 return false;
@@ -308,6 +314,8 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 					"propertyCompany" : $scope.propertyCompany,
 					"community" : $scope.community,
 					"building":$scope.building,
+					"floor":$scope.floor,
+					"saveType":$scope.selectValue,
 					"acctItemRels":$scope.acctItemRels
 				})},
 				function(data) {

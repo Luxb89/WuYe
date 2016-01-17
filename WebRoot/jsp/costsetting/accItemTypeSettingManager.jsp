@@ -29,6 +29,16 @@
 .defind-div{
  	display: inline-block;
 }
+.defined-input{
+	width:100px;
+}
+.defined-select {
+	width: 228px;
+}
+.defined-modal-input{
+	position: absolute;
+    z-index:1051;
+}
 </style>
 </head>
 <body ng-app="acctItemRelMainApp" ng-controller="acctItemRelMainController">
@@ -38,28 +48,22 @@
       <div class="span12">
         <div class="box">
           <div class="box-title">
-            <div class="span4">
-              <h3><i class="fa fa-key"></i>物业费用类型设置</h3>
+            <div class="span2">
+              <h3><i class="fa fa-key"></i>费用类型设置</h3>
             </div>
-            <div class="span8">
+            <div class="span10">
               <form id="form1" name="form1">
                 <div class="form-horizontal pull-right">
-                	<label class="defind-label">请输入定位条件:</label>
-                	<input type="text" id="temp_pp_company" class="input-medium  search-query" placeholder="输入选择物业公司"
-											ng-model="propertyCompany.value"
-											ng-change="resetCommpanyChild()"
-											ui-event="{autocompletecreate:'changeClass(propertyCompanys)'}"
-											ui-autocomplete="propertyCompanys">
-					<input type="text" id="temp_community" class="input-medium search-query" placeholder="输入选择小区"
-											ng-model="community.companyName"
-											ng-change="resetBuildingChild()"
-											ui-event="{autocompletecreate:'changeClass(communitys)'}"
-											ui-autocomplete="communitys" >
-					<input type="text" id="buillding" class="input-medium search-query" placeholder="输入选择楼栋/单元"
-											ng-model="building.buildingName"
-											ui-event="{autocompletecreate:'changeClass(buildings)'}"
-											ui-autocomplete="buildings">                  
-					<input type="button" class="btn" id="search" ng-click="queryAcctItemRels()" value="查询">
+	                <div class="defind-div">
+						<div class="box-content pull-left">
+							<span>物业公司：{{propertyCompany.label}}</span>
+							<span>小区：{{community.label}}</span>
+							<span ng-show="showBuilding">楼栋：{{building.label}}</span>
+							<span ng-show="showFloor">楼层：{{floor.floorId}}</span>
+							<input class="defined-input" type="text" ng-click="showQueryModel()" class="input-medium search-query" placeholder="点我搜搜更懂您!"/>
+	                		<%--<input type="button" class="btn" id="search" ng-click="queryAcctItemRels()" value="查询">
+						--%></div>
+					</div>
                 </div>
               </form>
             </div>
@@ -77,7 +81,7 @@
               ajax-url="/Wemedical/Diagnosis" ajax-length="0">
                 <thead>
                   <tr>
-                  	<th class="with-checkbox"><input ng-model="selectAll"
+                  	<th class="with-checkbox"><input ng-model="selectAll" data-ng-click="selectedAll()"
 												type="checkbox"></th>
 					<th>费用大类</th>
                   	<th >费用细类</th>
@@ -89,10 +93,10 @@
                 <tbody>
                 	<tr ng-repeat="acctItemRel in acctItemRels">
                 		<td >
-                			<input type="checkbox" ng-checked="selectAll" ng-model="acctItemRel.selected"></td>
+                			<input ng-init="acctItemRel.selected=false" type="checkbox" ng-checked="selectAll" data-ng-model="acctItemRel.selected"></td>
                 		<td>{{acctItemRel.parentAcctItemTypeName}}</td>
                 		<td>{{acctItemRel.acctItemTypeName}}</td>
-                		<td>{{acctItemRel.price}}</td>
+                		<td>{{acctItemRel.price|number:2}}</td>
                 		<td>{{acctItemRel.caculateMethodName}}</td>
                 		<td><button ng-click="mod(acctItemRel)" class="btn defined-role-btn">修改</button></td>
                 	</tr>
@@ -104,6 +108,57 @@
       </div>
     </div>
   </div>
+</div>
+<div class="modal fade hide" id="queryModal" tabindex="-1" role="dialog"
+	   aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+	      <div class="modal-content">
+	         <div class="modal-header">
+	   		<form class="form-horizontal" name="myForm" novalidate>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">定位条件:</label>
+							<select class="col-sm-10" ng-model="selectValue"
+							ng-change="show(selectValue)"
+							ng-options="item.id as item.name for item in data"></select>
+						</div>
+						<div class="form-group">
+								<label class="col-sm-2 control-label">物业公司:</label>
+								<input class="col-sm-10" type="text" id="temp_pp_company"  placeholder="输入择物业公司"
+								ng-model="propertyCompany.value"
+								ng-change="resetCommpanyChild()"
+								ui-event="{autocompletecreate:'changeClass(propertyCompanys)'}"
+								ui-autocomplete="propertyCompanys" required>
+								<span style="color:red" >*</span> 
+						</div>
+						<div class="form-group">
+								<label class="col-sm-2 control-label">小区:</label>
+								<input  class="col-sm-10" type="text" id="temp_community" class="input-medium search-query" placeholder="输入择小区"
+								ng-model="community.companyName"
+								ng-change="resetBuildingChild()"
+								ui-event="{autocompletecreate:'changeClass(communitys)'}"
+								ui-autocomplete="communitys" required>
+								<span style="color:red" >*</span>
+						</div>
+						<div class="form-group" ng-show="showBuilding" >
+							<label class="col-sm-2 control-label">楼栋/单元:</label>
+							<input class="col-sm-10" type="text" id="buillding" class="input-medium search-query" placeholder="输入择楼栋/单元"
+							ng-model="building.buildingName"
+							ui-event="{autocompletecreate:'changeClass(buildings)'}"
+							ui-autocomplete="buildings" required>
+							<span style="color:red" >*</span>
+						</div>
+						<div class="form-group"  ng-show="showFloor">
+							<label class="col-sm-2 control-label">楼层:</label>
+							<select class="col-sm-10" ng-model="floor.floorId" class="input-medium search-query"
+							ng-change="choseFloor()"
+							ng-options="floor.floorId as floor.floorName  for floor in floors"
+							></select>
+							<span style="color:red" >*</span>
+						</div>
+				</form>
+	  		</div>
+	      </div>
+	   </div>
 </div>
 <div class="modal fade hide" id="myModal" tabindex="-1" role="dialog"
 	   aria-labelledby="myModalLabel" aria-hidden="true">
@@ -131,7 +186,8 @@
 					</div>
 					<div class="form-group">
 	            		<label class="col-sm-2 control-label">收费标准：</label>
-	            		<input class="col-sm-10" style="width: 38.1%" type="number" step="any" id="price" min="0" ng-model="acctItemRel.price"  required>
+	            		<input class="col-sm-10" style="width: 38.1%" type="number" step="any" id="price" min="0" ng-model="acctItemRel.price" 
+	            		 required>
 						<span style="color:red" >*</span>
 					</div>
 					<div class="form-group">
