@@ -1,0 +1,17 @@
+DELETE from acct_item_type  where acct_item_type_id in ('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16');
+INSERT INTO `acct_item_type` VALUES (1, '水费', '10', 0, '', NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (2, '电费', '11', 0, '', NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (3, '物业费', '12', 0, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (4, '电梯费', '13', 0, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (5, '物业管理费', '12', 3, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (6, '代收水费', '10', 1, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (7, '水费公摊', '10', 1, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (8, '代收生活垃圾处理费', '10', 1, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (9, '代收电费', '11', 2, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (10, '电费公摊', '11', 2, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (11, '电梯公摊电费', '13', 4, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (12, '电梯使用费', '13', 4, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (13, '停车', '14', 0, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (14, '停车费', '14', 13, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (15, '其他费用', '15', 0, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());
+INSERT INTO `acct_item_type` VALUES (16, '其他费用', '15', 15, NULL, NULL, SYSDATE(), SYSDATE(), '1000', SYSDATE());

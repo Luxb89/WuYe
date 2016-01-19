@@ -1,0 +1,41 @@
+<mockup version="1.0" skin="sketch" measuredW="905" measuredH="894" mockupW="783" mockupH="868">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="112" y="16" w="783" h="868" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//</text>
+        <verticalScrollbar>false</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Tree" x="120" y="88" w="165" h="516" measuredW="300" measuredH="225" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>2</selectedIndex>
+        <text>-%u6536%u8D39%u7BA1%u7406%0A_%u6536%u8D39%u8BBE%u7F6E</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::HRule" x="299" y="126" w="538" h="-1" measuredW="100" measuredH="5" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>8554646</color>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Label" x="307" y="104" w="-1" h="-1" measuredW="83" measuredH="22" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u8D39%u7528%u7C7B%u578B%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Link" x="638" y="369" w="-1" h="-1" measuredW="44" measuredH="22" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u4E0A%u4E00%u9875</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::DataGrid" x="309" y="146" w="517" h="275" measuredW="518" measuredH="145" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderStyle>none</borderStyle>
+        <hasHeader>true</hasHeader>
+        <selectedIndex>-1</selectedIndex>
+        <text>%u8D39%u7528%u7C7B%u578B%u540D%u79F0%2C%20%u8D39%u7528%u5927%u7C7B%2C%u8D39%u7528%u7C7B%u578B%u7F16%u7801%2C%u6536%u8D39%u6807%u51C6%2C%u6536%u8D39%u65B9%u5F0F%2C%u64CD%u4F5C%0A%u7269%u4E1A%u7BA1%u7406%u8D39%2C%2Cwg01%2C30%u5143/%u6708/%u5E73%u65B9%u7C73%2C%0A%u6C34%u8D39%2C%2Csf01%0A%u4EE3%u6536%u6C34%u8D39%uFF08%u5428%uFF09%2C%u6C34%u8D39%28sf01%29%2Csf02%2C%2C%2C%0A%u6C34%u8D39%u516C%u644A%uFF08%u5428%uFF09%2C%u6C34%u8D39%28sf01%29%2Csf03%2C%2C%u5C0F%u533A%u7528%u91CF%u516C%u644A%2C%0A%7B0C%2C%200C%2C%200C%2C%200C%2C20C%7D</text>
+        <vLines>false</vLines>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
