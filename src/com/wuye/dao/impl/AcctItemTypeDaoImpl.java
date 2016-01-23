@@ -46,7 +46,8 @@ public class AcctItemTypeDaoImpl extends BaseDaoHibernate implements AcctItemTyp
 					JSONObject destAcctItemType=new JSONObject();
 					AcctItemType acctItemType=(AcctItemType)pageInfo.getDataList().get(i);
 					EntityCopyUtil.populate(destAcctItemType, acctItemType,
-							new String[]{"acctTypeName","acctItemTypeId","acctType","parentAcctTypeId","tempAcctItemTypeId"});
+							new String[]{"acctTypeName","acctItemTypeId","acctType","parentAcctTypeId"
+							,"tempAcctItemTypeId","unit"});
 					list.add(destAcctItemType);
 				}
 			}

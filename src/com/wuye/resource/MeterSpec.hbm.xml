@@ -22,7 +22,7 @@
             <column name="meter_name" length="50"   />
         </property>
         <property name="unit" type="java.lang.String">
-            <column name="unit" length="2">
+            <column name="unit" length="10">
                 <comment>10：吨，11:度，12：立方米</comment>
             </column>
         </property>
@@ -34,8 +34,8 @@
         <property name="classId" type="java.lang.String">
             <column name="class_id" length="2" />
         </property>
-        <property name="attribute55" type="java.lang.Integer">
-            <column name="attribute_55" />
+        <property name="objId" type="java.lang.Integer">
+            <column name="obj_id" />
         </property>
         <property name="createDate" type="java.sql.Timestamp">
             <column name="create_date" length="19" />
@@ -49,11 +49,11 @@
         <property name="statusDate" type="java.sql.Timestamp">
             <column name="status_date" length="19" />
         </property>
-        <set name="meterInsts" inverse="true">
+        <!--<set name="meterInsts" inverse="true">
             <key>
                 <column name="meter_spec_id"   />
             </key>
             <one-to-many class="com.wuye.entity.MeterInst" />
         </set>
-    </class>
+    --></class>
 </hibernate-mapping>

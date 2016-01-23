@@ -292,7 +292,7 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
 				$scope.queryType="queryByFloor";
         		$scope.objId=$scope.floor.floorId;
 			 }
-        	costSettingService.queryAcctItemRels({
+        	costSettingService.queryMeterSpec({
         		"inParma":JSON.stringify({"queryType":$scope.queryType,"objId":$scope.objId})
         	},
         		function(data){
@@ -301,7 +301,7 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
         				$scope.isSuccess=false;
         				return false;
         			}
-        			$scope.acctItemRels=data.data;
+        			$scope.meterSpecs=data.data;
         		},
         		function(){
         			$scope.isSuccess=false;

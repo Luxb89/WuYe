@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/inside.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/defined-style.css'></c:url>" media="all">
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/public/jquery-ui.css'></c:url>" media="all">
-		<title>费用类型设置</title>
+		<title>费表类型设置</title>
 		<style type="text/css">
 .defind-label{
 	margin-left:1px;
@@ -47,7 +47,7 @@
 }
 </style>
 	</head>
-	<body ng-app="acctItemRelApp" ng-controller="acctItemRelController">
+	<body ng-app="meterSpecApp" ng-controller="meterSpecController">
 		<div id="main">
 			<div class="container-fluid">
 				<div class="row-fluid">
@@ -56,7 +56,7 @@
 							<div class="box-title">
 								<div class="span10">
 									<h3>
-										费用设置
+										费表设置
 									</h3>
 								</div>
 								<div class="span2">
@@ -69,45 +69,6 @@
 									<form class="box-content pull-right" name="myForm" novalidate>
 										<table  class="table table-hover">
 											<tr class="row-fluid ">
-												<!--<td>
-													<select ng-model="selectValue" style="width: 100px;"
-													ng-change="show(selectValue)"
-													ng-options="item.id as item.name for item in data"></select>
-												</td>
-												<td>
-													<label class="defind-label">物业公司</label>
-													<input class="defined-input" type="text" id="temp_pp_company" class="input-medium  search-query" placeholder="输入择物业公司"
-													ng-model="propertyCompany.value"
-													ng-change="resetCommpanyChild()"
-													ui-event="{autocompletecreate:'changeClass(propertyCompanys)'}"
-													ui-autocomplete="propertyCompanys" required>
-													<span style="color:red" >*</span> 
-												</td>
-												<td>
-													<label class="defind-label">小区</label>
-													<input  class="defined-input" type="text" id="temp_community" class="input-medium search-query" placeholder="输入择小区"
-													ng-model="community.companyName"
-													ng-change="resetBuildingChild()"
-													ui-event="{autocompletecreate:'changeClass(communitys)'}"
-													ui-autocomplete="communitys" required>
-													<span style="color:red" >*</span>
-												</td>
-												<td ng-show="showBuilding" >
-													<label class="defind-label">楼栋/单元</label>
-													<input class="defined-input" type="text" id="buillding" class="input-medium search-query" placeholder="输入择楼栋/单元"
-													ng-model="building.buildingName"
-													ui-event="{autocompletecreate:'changeClass(buildings)'}"
-													ui-autocomplete="buildings" required>
-													<span style="color:red" >*</span>
-												</td>
-												<td ng-show="showFloor" >
-													<label class="defind-label">楼层</label>
-													<select class="defined-input" ng-model="floor.floorId" class="input-medium search-query"
-													ng-options="floor.floorId as floor.floorName  for floor in floors"
-													></select>
-													<span style="color:red" >*</span>
-												</td>
-											-->
 											<input class="defined-input" type="text" ng-click="showQueryModel()" class="input-medium search-query" placeholder="点我搜搜更懂您!"/>
 											</tr>
 										</table>
@@ -133,43 +94,40 @@
 								<form id="communityform" method="post"
 									class="form-horizontal form-validate" name="myForm1" novalidate>
 									<table class="table table-hover" id="acctItemTypes">
-										<tr class="row-fluid accItemRelRow" id="acctItemRel{{acctItemRel.acciItemRelId}}" ng-repeat="acctItemRel in acctItemRels">
+										<tr class="row-fluid accItemRelRow" id="meterSpec{{meterSpec.meterSpecId}}" ng-repeat="meterSpec in meterSpecs">
 											<td width="20%">
-												<label class="defind-label">费用大类</label>
-												<select ng-model="acctItemRel.acctItemTypeId" style="width: 50%" 
-								               	ng-change="queryAcctItemType(acctItemRel.acctItemTypeId,{{acctItemRel.acciItemRelId}})"
-								               	ng-options="acctItemRel.acctItemTypeId as 
-												acctItemRel.acctTypeName for acctItemRel in acctItemTypeUps{{acctItemRel.acciItemRelId}}" required></select>
+												<label class="defind-label">费表大类</label>
+												<select ng-model="meterSpec.parentMeterSpec" style="width: 50%" 
+								               	ng-change="queryAcctItemType(meterSpec.meterSpecId,{{meterSpec.meterSpecId}})"
+								               	ng-options="meterSpec as 
+												meterSpec.meterName for meterSpec in meterSpecUps{{meterSpec.meterSpecId}}" required></select>
 												<span style="color: red">*</span>
 											</td>
-											<td  width="20%">
-												<label class="defind-label">费用细类</label>
-												<select style="width: 50%"
-												ng-model="acctItemRel.childAcctItemTypeId"
-												ng-options="acctItemRel.acctItemTypeId as
-												acctItemRel.acctTypeName for acctItemRel in acctItemTypes{{acctItemRel.acciItemRelId}}"
-												required></select> 
+											<td  width="30%">
+												<label class="defind-label">费表细类（别名）</label>
+												<input style="width: 50%"
+												ng-model="meterSpec.meterName"
+												required></input> 
 												<span style="color:red">*</span>
 											</td>
 											<td width="20%">
 												<label class="defind-label">收费标准</label>
-													<input type="number" step="any" id="price"  ng-model="acctItemRel.price" style="width: 30%" required>
-												<label class="defind-label"  id="unit{{acctItemRel.acciItemRelId}}"></label>
-													<span style="color:red">*</span>
+													<input type="number" step="any" id="price" min="0"  ng-model="meterSpec.price" style="width: 30%" >
+												<label class="defind-label"  id="unit{{meterSpec.meterSpecId}}"></label>
 											</td>
-											<td width="20%">
+											<!--<td width="20%">
 												<label class="defind-label">计算方法</label>
 													<select  style="width: 50%" id="acctItemTypeName" 
-													ng-model="acctItemRel.attrValue" 
-													ng-options="acctItemRel.attrValue as
-													acctItemRel.attrValueName for acctItemRel in caculateMethods"
+													ng-model="meterSpec.attrValue" 
+													ng-options="meterSpec.attrValue as
+													meterSpec.attrValueName for meterSpec in caculateMethods"
 													></select>  
 											</td>
-											<td>
-												<a class="btn"  ng-click="addAcctItemRel()" >
+											--><td>
+												<a class="btn"  ng-click="addMeterSpec()" >
 														<i class="icon-plus" ></i>新增
 													</a>
-													<a class="btn"  ng-click='removeAcctItemRel(acctItemRel)'>
+													<a class="btn"  ng-click='removeMeterSpec(meterSpec)'>
 														<i class="icon-minus"></i>删除
 													</a>
 											</td>
@@ -196,7 +154,7 @@
 	   		<form class="form-horizontal" name="myForm" novalidate>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">定位条件:</label>
-					<select class="col-sm-10" ng-model="selectValue"
+					<select class="col-sm-10" ng-model="selectValue" ng-disabled="true"
 					ng-change="show(selectValue)"
 					ng-options="item.id as item.name for item in data"></select>
 				</div>
@@ -252,8 +210,7 @@
 <script type="text/javascript" src="<c:url value='/js/costsetting/costsetting-service.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/jsp/mobile/property/property-service.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/js/public/selectSearchCom.js'></c:url>"></script>
-<%--<script type="text/javascript" src="<c:url value='/js/costsetting/acctItemRelAdd.js'></c:url>"></script>--%>
-<script type="text/javascript" src="<c:url value='/js/costsetting/add-acctitemrel-manager-controller.js'></c:url>"></script>
+<script type="text/javascript" src="<c:url value='/js/costsetting/add-meterspec-manager-controller.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/js/common/DirectiveUtil.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/js/costsetting/autocomplete.js'></c:url>"></script>
 <script type="text/javascript" src="<c:url value='/js/costsetting/event.js'></c:url>"></script>

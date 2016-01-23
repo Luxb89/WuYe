@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.wuye.common.util.string.StrUtil;
+import com.wuye.constants.BaseConstants;
+
 /**
  * MeterSpec entity. @author MyEclipse Persistence Tools
  */
@@ -19,8 +22,10 @@ public class MeterSpec extends BaseEntity implements java.io.Serializable {
 	private String unit;
 	private Float price;
 	private String classId;
-	private Integer attribute55;
+	private Integer objId;
 	private Set meterInsts = new HashSet(0);
+	private MeterSpec parentMeterSpec;
+	private BaseEntity obj;
 
 	// Constructors
 
@@ -36,7 +41,7 @@ public class MeterSpec extends BaseEntity implements java.io.Serializable {
 
 	/** full constructor */
 	public MeterSpec(String meterType, Integer parentMeterId, String meterName,
-			String unit, Float price, String classId, Integer attribute55,
+			String unit, Float price, String classId, Integer objId,
 			Timestamp createDate, Timestamp updateDate, String statusCd,
 			Timestamp statusDate, Set meterInsts) {
 		this.meterType = meterType;
@@ -45,7 +50,7 @@ public class MeterSpec extends BaseEntity implements java.io.Serializable {
 		this.unit = unit;
 		this.price = price;
 		this.classId = classId;
-		this.attribute55 = attribute55;
+		this.objId = objId;
 		this.createDate = createDate;
 		this.updateDate = updateDate;
 		this.statusCd = statusCd;
@@ -111,12 +116,12 @@ public class MeterSpec extends BaseEntity implements java.io.Serializable {
 		this.classId = classId;
 	}
 
-	public Integer getAttribute55() {
-		return this.attribute55;
+	public Integer getObjId() {
+		return this.objId;
 	}
 
-	public void setAttribute55(Integer attribute55) {
-		this.attribute55 = attribute55;
+	public void setObjId(Integer attribute55) {
+		this.objId = attribute55;
 	}
 
 	public Set getMeterInsts() {
@@ -126,5 +131,68 @@ public class MeterSpec extends BaseEntity implements java.io.Serializable {
 	public void setMeterInsts(Set meterInsts) {
 		this.meterInsts = meterInsts;
 	}
-
+	/**
+	 * 获取父类
+	 */
+	public MeterSpec getParentMeterSpec(){
+		if(this.isLoaded("parentMeterSpec", this.parentMeterSpec)){
+			return this.parentMeterSpec;
+		}
+		if(StrUtil.isNullOrEmpty(this.getParentMeterId())){
+			return null;
+		}
+		this.parentMeterSpec=(MeterSpec)this.getDefaultDao().getObject(MeterSpec.class, this.parentMeterId);
+		return this.parentMeterSpec;
+	}
+	/**
+	 * 获取父类名称
+	 */
+	public String getParentMeterName(){
+		String parentMeterName="";
+		if(!StrUtil.isNullOrEmpty(this.getParentMeterSpec())){
+			parentMeterName= this.getParentMeterSpec().getMeterName();
+		}
+		return parentMeterName;
+	}
+	public void setObj(BaseEntity obj) {
+		this.obj = obj;
+	}
+	public BaseEntity getObj() {
+		if (this.isLoaded("obj", this.obj)){
+			return this.obj;
+		}
+		this.obj =this.getDefaultDao().getObj(this.classId,this.objId);
+		this.Loaded("obj");
+		return this.obj;
+	}
+	/**
+     * 通过class_id和对象id查询相应实体名称
+     * @param classId
+     * @param objId
+     * @return
+     */
+    public String getObjName() {
+		if(BaseConstants.CLASS_COMPANY.equals(this.classId)){
+			PropertyCompany propertyCompany=(PropertyCompany) this.getObj();
+			if(propertyCompany!=null){
+				return propertyCompany.getCompanyName();
+			}
+		}else if(BaseConstants.CLASS_COMMUNITY.equals(this.classId)){
+			Community community=(Community)this.getObj();
+			if(community!=null){
+				return community.getCommunityName();
+			}
+		}else if(BaseConstants.CLASS_BUILDING.equals(this.classId)){
+			Building building=(Building) this.getObj();
+			if(building!=null){
+				return building.getBuildingName();
+			}
+		}else if(BaseConstants.CLASS_ROOM.equals(this.classId)){
+			Room room=(Room) this.getObj();
+			if(room!=null){
+				return room.getRoomNbr();
+			}
+		}
+		return "";
+	}
 }

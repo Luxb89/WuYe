@@ -109,6 +109,7 @@ public class AttrValueServiceImpl extends BaseManagerImpl implements
 		if (containSysValue) {
 			hql.append("select b from AttrSpec a, AttrValue b ")
 					.append(" where 1=1 ").append(" and a.classId = ? ")
+					.append(" and a.attrCode= ? ")
 					.append(" and a.attrId = b.attrSpec.attrId ")
 					.append(" and (b.communityId = ? or b.communityId is null) ")
 					.append(" and b.statusCd = ? ")
@@ -117,6 +118,7 @@ public class AttrValueServiceImpl extends BaseManagerImpl implements
 		} else {
 			hql.append("select b from AttrSpec a, AttrValue b ")
 					.append(" where 1=1 ").append(" and a.classId = ? ")
+					.append(" and a.attrCode= ? ")
 					.append(" and a.attrId = b.attrSpec.attrId ")
 					.append(" and b.communityId = ? ")
 					.append(" and b.statusCd = ? ")
@@ -124,6 +126,7 @@ public class AttrValueServiceImpl extends BaseManagerImpl implements
 		}
 
 		params.add(classId);
+		params.add(attrCd);
 		params.add(communityId+"");
 		params.add(BaseConstants.STATUS_VALID);
 		params.add(attrValue);

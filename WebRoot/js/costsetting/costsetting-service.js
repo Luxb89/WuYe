@@ -4,7 +4,7 @@
  * @author tanyw
  */
 
-// 创建物业服务模块
+// 创建物业费用模块
 var costSettingServiceApp = angular.module("costSettingServiceApp", [ "commonApp" ]);
 
 costSettingServiceApp.service("costSettingService", [ "commonService", function(commonService) {
@@ -18,11 +18,19 @@ costSettingServiceApp.service("costSettingService", [ "commonService", function(
     };
     this.saveAcctItemRel=function(params,sback,eback){
     	commonService.call("acctItemRelAction!saveAcctItemRel.action",params,sback,eback);
-    }
+    };
     this.queryAcctItemRels=function(params,sback,eback){
     	commonService.call("acctItemRelAction!queryAcctItemRels.action",params,sback,eback);
-    }
+    };
     this.removeAcctItemRel=function(params,sback,eback){
     	commonService.call("acctItemRelAction!removeAcctItemRel.action",params,sback,eback);
-    }
+    };
+     // 获取费表规格信息
+    this.queryMeterSpec = function(params, sback, eback) {
+        commonService.call("meterSpecAction!queryMeterSpecs.action", params, sback, eback);
+    };
+    //保存费表规格信息
+    this.saveMeterSpec=function(params,sback,eback){
+    	commonService.call("meterSpecAction!saveMeterSpec.action",params,sback,eback);
+    };
 } ]);

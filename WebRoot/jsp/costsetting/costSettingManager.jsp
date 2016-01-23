@@ -85,21 +85,15 @@
 								<div class="tile-info">
 									<strong>费用设置</strong>
 								</div> </a>
-							<a href="javascript:void(0)" data-toggle="modal"
+							<a href="meterSpecSettingManager.jsp" 
 								class="tile tile-themed defined-modal" data-attrid="1"
-								data-attrname="权属类型"> <i class="fa fa-ticket"></i>
-								<div class="tile-info">
-									<strong>费用设置</strong>
-								</div> </a>
-							<a href="javascript:void(0)" data-toggle="modal"
-								class="tile tile-themed defined-modal" data-attrid="1"
-								data-attrname="权属类型"> <i class="fa fa-ticket"></i>
+								data-attrname="费表类型设置"> <i class="fa fa-ticket"></i>
 								<div class="tile-info">
 									<strong>费表类型设置</strong>
 								</div> </a>
-							<a href="javascript:void(0)" data-toggle="modal"
+							<a href="meterInstSettingManager.jsp" 
 								class="tile tile-themed defined-modal" data-attrid="1"
-								data-attrname="权属类型"> <i class="fa fa-ticket"></i>
+								data-attrname="费表设置"> <i class="fa fa-ticket"></i>
 								<div class="tile-info">
 									<strong>费表设置</strong>
 								</div> </a>
