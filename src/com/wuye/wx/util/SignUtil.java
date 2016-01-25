@@ -26,7 +26,7 @@ public class SignUtil {
 	 */
 	public static boolean checkSignature(String signature, String timestamp,
 			String nonce) {
-		AttrSpec tokenAttr = SysProvider.getAttrSpec("sys_assist", "appID");
+		AttrSpec tokenAttr = SysProvider.getAttrSpec("sys_assist", "token");
 		String token = "weiXinWuYe";
 		if (tokenAttr != null && !StrUtil.isNullOrEmpty(tokenAttr.getDefalueValue())){
 			token = tokenAttr.getDefalueValue();
