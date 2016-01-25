@@ -4,6 +4,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import com.wuye.common.util.string.StrUtil;
+import com.wuye.entity.AttrSpec;
+import com.wuye.util.SysProvider;
+
 /**
  * 请求校验工具类
  * 
@@ -11,8 +15,6 @@ import java.util.Arrays;
  * @date 2013-05-18
  */
 public class SignUtil {
-	// 与接口配置信息中的 Token 要一致
-	private static String token = "&^weiXinWuYe#%";
 
 	/**
 	 * 验证签名
@@ -24,6 +26,11 @@ public class SignUtil {
 	 */
 	public static boolean checkSignature(String signature, String timestamp,
 			String nonce) {
+		AttrSpec tokenAttr = SysProvider.getAttrSpec("sys_assist", "appID");
+		String token = "weiXinWuYe";
+		if (tokenAttr != null && !StrUtil.isNullOrEmpty(tokenAttr.getDefalueValue())){
+			token = tokenAttr.getDefalueValue();
+		}
 		String[] arr = new String[] { token, timestamp, nonce };
 		// 将 token、timestamp、nonce 三个参数进行字典序排序
 		Arrays.sort(arr);
