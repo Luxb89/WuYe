@@ -71,6 +71,8 @@
 
 			<tx:method name="import*" propagation="REQUIRED"
 				rollback-for="Exception" />
+				
+			<tx:method name="saveAttrSpec" read-only="false" propagation="REQUIRES_NEW" />
 		</tx:attributes>
 	</tx:advice>
 

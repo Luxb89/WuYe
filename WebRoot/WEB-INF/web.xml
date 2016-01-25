@@ -18,6 +18,17 @@
 		<param-name>log4jExposeWebAppRoot</param-name>
 		<param-value>false</param-value>
 	</context-param>
+	<servlet>
+		<servlet-name>WXCoreServlet</servlet-name>
+		<servlet-class>com.wuye.wx.WXCoreServlet</servlet-class>
+	</servlet>
+
+	<!-- url-pattern 中配置的/coreServlet 用于指定该 Servlet 的访问路径 -->
+	<servlet-mapping>
+		<servlet-name>WXCoreServlet</servlet-name>
+		<url-pattern>/WXCoreServlet</url-pattern>
+	</servlet-mapping>
+	
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>

@@ -78,7 +78,7 @@ public class OnlineFilter implements Filter, StrutsStatics {
 		
 		boolean pb=true;
 		if(path!=null){
-			if(path.indexOf("login.html")>0){
+			if(path.indexOf("login.html")>0 || path.indexOf("userBindings.jsp")>0){
 				pb=false;
 			}
 		}

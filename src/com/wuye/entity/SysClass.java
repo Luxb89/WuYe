@@ -1,12 +1,18 @@
 package com.wuye.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.wuye.constants.BaseConstants;
 
 /**
  * SysClass entity. @author MyEclipse Persistence Tools
  */
 
-public class SysClass implements java.io.Serializable {
+public class SysClass extends BaseEntity implements java.io.Serializable {
 
 	// Fields
 
@@ -17,7 +23,7 @@ public class SysClass implements java.io.Serializable {
 	private Timestamp createDate;
 	private Timestamp statusDate;
 	private Timestamp updateDate;
-
+	
 	// Constructors
 
 	/** default constructor */
@@ -43,11 +49,11 @@ public class SysClass implements java.io.Serializable {
 	// Property accessors
 
 	public Integer getClassId() {
-		return this.classId;
+		return super.getId();
 	}
 
 	public void setClassId(Integer classId) {
-		this.classId = classId;
+		super.setId(classId);
 	}
 
 	public String getTableName() {
@@ -97,5 +103,19 @@ public class SysClass implements java.io.Serializable {
 	public void setUpdateDate(Timestamp updateDate) {
 		this.updateDate = updateDate;
 	}
-
+	
+	public AttrSpec getAttrSpecByCode(String propertyName) {
+		String hql = "from AttrSpec a where a.attrCode=? and a.statusCd=? and a.classId=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(propertyName);
+		params.add(BaseConstants.STATUS_VALID);
+		params.add(this.getId());
+		
+		List<AttrSpec> attrs = SysClass.getDefaultDao().findListByHQLAndParams(hql, params);
+		if (attrs != null && attrs.size() > 0){
+			return attrs.get(0);
+		}else{
+			return null;
+		}
+	}
 }

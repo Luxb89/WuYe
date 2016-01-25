@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.wuye.common.util.SpringUtil;
 import com.wuye.dao.AttrSpecDao;
 
@@ -29,6 +32,10 @@ public class AttrSpec extends BaseEntity implements java.io.Serializable {
 	private String attrValueType;
 	private String attrType;
 	private Set attrValues = new HashSet(0);
+	@Getter
+	@Setter
+	private String defalueValue;
+	
 
 	// Constructors
 
