@@ -20,7 +20,7 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
 			    setTimeout(function(){MESSAGE_DIALOG.close()},2000);
 			}
 	    });
-	    $scope.data=[{id:'12',name:"小区"},{id:'14',name:"楼栋"},{id:'17',name:"楼层"}];
+	    $scope.data=[{id:'12',name:"==小区=="},{id:'14',name:"==楼栋=="},{id:'17',name:"==楼层=="}];
 	    $scope.selectValue='12';
 	    $scope.show=function(value){
 	    	if(value=="14"){
@@ -273,15 +273,6 @@ acctItemRelMainApp.controller("acctItemRelMainController", [ "$scope", "commonSe
 			});
 		};
 		$(function(){  
-		  	$(window).scroll(function() {  
-		      //当内容滚动到底部时加载新的内容  
-		      if ($(this).scrollTop() + $(window).height() + 20 >= $(document).height() && $(this).scrollTop() > 20) {  
-		          //当前要加载的页码 
-		    	  if ($scope.buildingUnit && $scope.buildingUnit.buildingId) {
-		    		  $scope.queryRoom($scope.buildingUnit.buildingId);
-		    	  }
-		      }  
-		  });
 		  $scope.queryAcctItemRels=function(){
         	if($scope.selectValue=="12"){
 				 if(ffc.util.isEmpty([$scope.community][0])){

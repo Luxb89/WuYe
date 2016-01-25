@@ -24,7 +24,7 @@
 		<title>费用类型设置</title>
 		<style type="text/css">
 .defind-label{
-	margin-left:15px;
+	margin-left:1px;
 	margin-right:0px;
 	display: inline;
 }
@@ -153,7 +153,8 @@
 											</td>
 											<td width="20%">
 												<label class="defind-label">收费标准</label>
-													<input type="number" step="any" id="price" min="0" ng-model="acctItemRel.price" style="width: 50%" required>
+													<input type="number" step="any" id="price"  ng-model="acctItemRel.price" style="width: 30%" required>
+												<label class="defind-label"  id="unit{{acctItemRel.acciItemRelId}}"></label>
 													<span style="color:red">*</span>
 											</td>
 											<td width="20%">

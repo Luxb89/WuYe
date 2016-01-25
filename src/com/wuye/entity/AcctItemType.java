@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.wuye.common.util.SpringUtil;
 import com.wuye.common.util.string.StrUtil;
+import com.wuye.constants.BaseConstants;
+import com.wuye.services.AttrValueService;
 
 /**
  * AcctItemType entity. @author MyEclipse Persistence Tools
@@ -142,5 +145,26 @@ public class AcctItemType extends BaseEntity implements java.io.Serializable {
 	 */
 	public Integer getTempAcctItemTypeId(){
 		return this.getAcctItemTypeId();
+	}
+	/**
+	 * 获取单位信息
+	 * @return
+	 */
+	public String getUnit(){
+		String unit="";
+		if(!StrUtil.isNullOrEmpty(this.acctType)){
+			AttrValue attrValue=getAttrValueService().getAttrValue(Integer.parseInt(BaseConstants.CLASS_ACCT_ITEM_TYPE), "unit", null,this.acctType, true);
+			if(attrValue!=null){
+				unit=attrValue.getAttrValueName();
+			}
+		}
+		return unit;
+	}
+	/**
+	 * 获取attrValue
+	 * @return
+	 */
+	public static AttrValueService getAttrValueService(){
+		return (AttrValueService)SpringUtil.getBean("attrValueService");
 	}
 }

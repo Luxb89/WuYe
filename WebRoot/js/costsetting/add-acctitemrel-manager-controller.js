@@ -223,9 +223,15 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 		$scope.queryAcctItemType=function(upAcctItemTypeId,number){
 			var acctItemTypeAll="acctItemTypes"+number;
 			var acctItemTypeUp="acctItemTypesUp"+upAcctItemTypeId;
+			var unitSingle="unit"+number;
 			//如果已经通过上级取过下级了就不需要去库里面再取数据，加速界面的加载
 			if(!ffc.util.isEmpty($scope[acctItemTypeUp])){
 				$scope[acctItemTypeAll]=$scope[acctItemTypeUp];
+				angular.forEach($scope[acctItemTypeUp],function(value){
+					if(value.parentAcctTypeId==upAcctItemTypeId){
+						$("#"+unitSingle).html(value.unit);
+					}
+				});
 			}else{
 				costSettingService.queryAcctItemType({"inParma":JSON.stringify(
 					{"qryType":"","parentAcctItemTypeId":upAcctItemTypeId})
@@ -238,6 +244,11 @@ acctItemRelApp.controller("acctItemRelController", [ "$scope", "commonService","
 						}
 						$scope[acctItemTypeAll]=data.data;
 						$scope[acctItemTypeUp]=data.data;
+						angular.forEach(data.data,function(value){
+							if(value.parentAcctTypeId==upAcctItemTypeId){
+								$("#"+unitSingle).html(value.unit);
+								}
+							});
 					},
 					function(){
 						$scope.isSuccess=false;

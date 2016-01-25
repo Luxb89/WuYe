@@ -1,0 +1,47 @@
+<mockup version="1.0" skin="sketch" measuredW="905" measuredH="894" mockupW="783" mockupH="868">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="112" y="16" w="783" h="868" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//</text>
+        <verticalScrollbar>false</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::IconLabel" x="319" y="168" w="-1" h="-1" measuredW="83" measuredH="70" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u8D39%u7528%u7C7B%u578B%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::IconLabel" x="447" y="168" w="-1" h="-1" measuredW="57" measuredH="70" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u8D39%u7528%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::IconLabel" x="558" y="168" w="-1" h="-1" measuredW="83" measuredH="70" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u8D39%u8868%u7C7B%u578B%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Tree" x="120" y="88" w="165" h="516" measuredW="300" measuredH="225" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>2</selectedIndex>
+        <text>-%u6536%u8D39%u7BA1%u7406%0A_%u6536%u8D39%u8BBE%u7F6E</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::HRule" x="299" y="126" w="538" h="-1" measuredW="100" measuredH="5" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>8554646</color>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Label" x="307" y="104" w="-1" h="-1" measuredW="57" measuredH="22" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u8D39%u7528%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::IconLabel" x="669" y="168" w="-1" h="-1" measuredW="57" measuredH="70" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u8D39%u8868%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

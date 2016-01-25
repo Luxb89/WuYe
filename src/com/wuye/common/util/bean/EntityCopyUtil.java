@@ -11,6 +11,7 @@ import com.wuye.entity.AttrValue;
 import com.wuye.entity.Building;
 import com.wuye.entity.BuildingType;
 import com.wuye.entity.Community;
+import com.wuye.entity.MeterSpec;
 import com.wuye.entity.Notice;
 import com.wuye.entity.Parking;
 import com.wuye.entity.ParkingType;
@@ -389,4 +390,25 @@ public class EntityCopyUtil {
             BeanUtilsExtend.populate(dest, src, new String[]{"noticeType","title","content","statusCd","createDate","statusDate","updateDate"});
         }
     }
+	public static void populate(JSONObject dest, MeterSpec src, String[] property){
+		if (dest == null || src == null){
+			return;
+		}
+		if (property == null || property.length == 0){
+			property = new String[]{"meterSpecId","meterType","parentMeterId","meterName","unit","price"};
+		}
+		for (String prop : property){
+			populate(dest,src,prop);
+		}
+	}
+	public static void populate(MeterSpec dest, JSONObject src, String[] property){
+		if (dest == null || src == null){
+			return;
+		}
+		if (property != null && property.length > 0){
+			BeanUtilsExtend.populate(dest, src, property);
+		}else{
+			BeanUtilsExtend.populate(dest, src, new String[]{"meterSpecId","meterType","parentMeterId","meterName","unit","price"});
+		}
+	}
 }
